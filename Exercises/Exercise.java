@@ -1,7 +1,12 @@
 package Exercises;
 
+import java.util.List;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import Interface.ConsoleManager;
 import Interface.MenuRender;
 
 public abstract class Exercise {
@@ -30,8 +35,14 @@ public abstract class Exercise {
     }
 
     public boolean End() {
+        ConsoleManager.PrintText("\n\n");
+        Map<String, List<String>> menuData = new HashMap<String, List<String>>();
+        var nemuLines = new ArrayList<String>();
+        menuData.put("0: ВЫХОД", nemuLines);
+        var menu = new MenuRender(menuData);
+        int answer = menu.StartRenderMenu();
 
-        return answer == 1;
+        return answer == 0;
     }
 
     private void DrawHeader() {

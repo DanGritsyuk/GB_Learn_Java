@@ -21,8 +21,9 @@ public class MenuRender {
                 ConsoleManager.PrintText("\n    ");
                 ConsoleManager.PrintText(taskText);
             }
+            ConsoleManager.PrintText("\n\n");
         }
 
-        return Integer.parseInt(ConsoleManager.InputText("\n\nВведите номер задачи: ", _scanner));
+        return Integer.parseInt(ConsoleManager.InputText("\n\nВведите номер: ", _scanner));
     }
 }
