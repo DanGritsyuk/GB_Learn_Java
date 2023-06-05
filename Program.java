@@ -1,30 +1,31 @@
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import Exercises.Exercise;
+import Exercises.ExerciseBuilder;
+import Exercises.ExerciseData;
+import Interface.ConsoleManager;
+import Interface.MenuRender;
 
 public class Program {
-    public static void main(String[] args) throws IOException {
-        int key = 0;
-        if (args.length > 0) {
-            key = 1; // tryparse
-        }
+    public static void main(String[] args) {
+        int taskId = 0;
 
-        ConsoleManager.ConsoleClear();
+        var exData = new ExerciseData();
+        var menu = new MenuRender(exData.descriptions);
 
         boolean startApp = true;
         while (startApp) {
-            Map<String, List<String>> menuData = new HashMap<String, List<String>>();
-            var nemuLines = new ArrayList<String>();
-            nemuLines.add("Пункт 1");
-            nemuLines.add("Пункт 2");
-            nemuLines.add("Пункт 3");
-            menuData.put("ЗАГОЛОВОК", nemuLines);
+            ConsoleManager.ConsoleClear();
+            taskId = menu.StartRenderMenu();
+            try {
+                Exercise exercise = ExerciseBuilder.GetExerciseObject(exData, taskId);
+                if (exercise != null) {
+                    exercise.Start();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-            key = MenuRender.StartRenderMenu(menuData, 0, 30, true, true, "", "");
+            startApp = taskId != 0;
 
-            startApp = key == 0;
         }
 
         ConsoleManager.ConsoleClear();
