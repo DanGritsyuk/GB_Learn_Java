@@ -15,8 +15,9 @@ public abstract class Exercise {
     }
 
     private String _description;
+    private String _borderLine = "\n==========================================\n";
 
-    public abstract boolean Solution();
+    public abstract boolean Solution() throws IOException;
 
     public void Start() {
         boolean done = false;
@@ -26,8 +27,9 @@ public abstract class Exercise {
                 done = Solution();
             } catch (Exception ex) {
                 DrawHeader();
-                System.out.println(ex);
+                ConsoleManager.PrintText(ex.getMessage());
             }
+            DrawFooter();
             if (done == false) {
                 done = End();
             }
@@ -46,12 +48,11 @@ public abstract class Exercise {
     }
 
     private void DrawHeader() {
-        try {
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-        } catch (IOException | InterruptedException ex) {
-            System.out.println(ex);
-        }
-        System.out.println(_description);
-        System.out.println("==========================================");
+        ConsoleManager.ConsoleClear();
+        ConsoleManager.PrintText(this._description + this._borderLine);
+    }
+
+    private void DrawFooter() {
+        ConsoleManager.PrintText(this._borderLine);
     }
 }

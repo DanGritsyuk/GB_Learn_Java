@@ -14,8 +14,8 @@ public class Program {
         boolean startApp = true;
         while (startApp) {
             ConsoleManager.ConsoleClear();
-            taskId = menu.StartRenderMenu();
             try {
+                taskId = menu.StartRenderMenu();
                 Exercise exercise = ExerciseBuilder.GetExerciseObject(exData, taskId);
                 if (exercise != null) {
                     exercise.Start();
@@ -25,7 +25,6 @@ public class Program {
             }
 
             startApp = taskId != 0;
-
         }
 
         ConsoleManager.ConsoleClear();
