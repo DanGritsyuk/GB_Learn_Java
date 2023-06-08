@@ -1,8 +1,7 @@
 package Exercises;
 
 import java.util.List;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +14,8 @@ public abstract class Exercise {
     }
 
     private String _description;
+    private String _borderLine = "==========================================";;
+    protected ConsoleManager _cm = new ConsoleManager();
 
     public abstract boolean Solution();
 
@@ -28,6 +29,7 @@ public abstract class Exercise {
                 DrawHeader();
                 System.out.println(ex);
             }
+            DrawFooter();
             if (done == false) {
                 done = End();
             }
@@ -35,23 +37,22 @@ public abstract class Exercise {
     }
 
     public boolean End() {
-        ConsoleManager.PrintText("\n\n");
+        _cm.PrintText("\n");
         Map<String, List<String>> menuData = new HashMap<String, List<String>>();
-        var nemuLines = new ArrayList<String>();
-        menuData.put("0: ВЫХОД", nemuLines);
-        var menu = new MenuRender(menuData);
-        int answer = menu.StartRenderMenu();
+        menuData.put("Выберите следующий шаг:", Arrays.asList("Выход в главное меню.", "Начать заново."));
+        var menu = new MenuRender(menuData, 0, true, false, _cm.GetFrameText(true), "", "");
 
-        return answer == 0;
+        int answer = menu.StartRenderMenu(0);
+
+        return answer == 0 || answer == 1;
     }
 
     private void DrawHeader() {
-        try {
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-        } catch (IOException | InterruptedException ex) {
-            System.out.println(ex);
-        }
-        System.out.println(_description);
-        System.out.println("==========================================");
+        ConsoleManager.ConsoleClear();
+        _cm.PrintText(this._description + "\n" + this._borderLine);
+    }
+
+    private void DrawFooter() {
+        _cm.PrintText("\n" + this._borderLine);
     }
 }

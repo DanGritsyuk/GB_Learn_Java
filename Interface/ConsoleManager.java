@@ -4,26 +4,79 @@ import java.util.Scanner;
 
 public class ConsoleManager {
 
-    public static void PrintText(String text) {
-        System.out.print(text);
+    public ConsoleManager() {
+        this._cs = new Scanner(System.in, "cp866");
     }
 
-    public static <T> void PrintArray(T[] array) {
-        System.out.print("[ ");
-        for (var item : array) {
-            System.out.printf("%s, ", item);
+    public ConsoleManager(Boolean onRead) {
+        this._cs = new Scanner(System.in, "cp866");
+        this._onRead = onRead;
+    }
+
+    private Scanner _cs;
+    private StringBuilder _frame = new StringBuilder();
+    private Boolean _onRead = true;
+
+    public String GetFrameText(Boolean toDelete) {
+        var text = _frame.toString();
+        if (toDelete) {
+            _frame.delete(0, _frame.length());
         }
-        System.out.println("\b\b ]");
+        return text;
     }
 
-    public static String InputText(String message, Scanner cs) {
+    public String InputText(String message) {
         System.out.print(message);
-        var text = cs.nextLine();
+        var text = _cs.nextLine();
+        ConsoleReading(message + text);
         return text;
+    }
+
+    public void PrintText() {
+        PrintText("", "\n");
+    }
+
+    public void PrintText(String text) {
+        PrintText(text, "\n");
+    }
+
+    public void PrintText(String text, String end) {
+        ConsoleReading(text + end);
+        System.out.print(text + end);
+    }
+
+    public <T> void PrintArray(T[] array) {
+        var output = new StringBuilder();
+        output.append("[ ");
+        for (var item : array) {
+            output.append(String.format("%s, ", item));
+        }
+        output.append("\b\b ]");
+        var text = output.toString();
+        ConsoleReading(text);
+        System.out.print(text);
     }
 
     public static void ConsoleClear() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+    }
+
+    public static void HideCursor(boolean isHidden) {
+        if (isHidden) {
+            System.out.print("\033[?25l");
+        } else {
+            System.out.print("\033[?25h");
+        }
+    }
+
+    public int GetKeyEvent() {
+        return KeyEventManager.Start();
+    }
+
+    private void ConsoleReading(String text) {
+        if (_onRead) {
+            _frame.append(text);
+        }
     }
 }

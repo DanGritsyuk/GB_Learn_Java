@@ -1,6 +1,5 @@
 package Exercises.Honework1;
 
-import Interface.ConsoleManager;
 import Exercises.Exercise;
 
 public class Exercise1 extends Exercise {
@@ -10,7 +9,7 @@ public class Exercise1 extends Exercise {
 
     @Override
     public boolean Solution() {
-        ConsoleManager.PrintText("done");
+        _cm.PrintText("done");
         return false;
     }
 }
