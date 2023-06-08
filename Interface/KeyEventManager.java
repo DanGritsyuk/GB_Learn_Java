@@ -22,12 +22,14 @@ public class KeyEventManager implements KeyListener {
     }
 
     public static int Start() {
+        int keyCode = 0;
         var frame = new JFrame("Key capture");
         KeyEventManager menu = new KeyEventManager();
         frame.addKeyListener(menu);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        while (true) {
+        var keyEventRun = true;
+        while (keyEventRun) {
             KeyEvent event = null;
             synchronized (_queue) {
                 if (!_queue.isEmpty()) {
@@ -35,7 +37,8 @@ public class KeyEventManager implements KeyListener {
                 }
             }
             if (event != null) {
-                return event.getKeyCode();
+                keyCode = event.getKeyCode();
+                keyEventRun = false;
             } else {
                 try {
                     Thread.sleep(10);
@@ -44,6 +47,8 @@ public class KeyEventManager implements KeyListener {
                 }
             }
         }
+        frame.dispose();
+        return keyCode;
     }
 
     @Override

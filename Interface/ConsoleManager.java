@@ -28,7 +28,7 @@ public class ConsoleManager {
     public String InputText(String message) {
         System.out.print(message);
         var text = _cs.nextLine();
-        ConsoleReading(message + text);
+        ConsoleReading(message + text + "\n");
         return text;
     }
 

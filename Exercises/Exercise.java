@@ -14,7 +14,7 @@ public abstract class Exercise {
     }
 
     private String _description;
-    private String _borderLine = "==========================================";;
+    private String _borderLine = "==========================================";
     protected ConsoleManager _cm = new ConsoleManager();
 
     public abstract boolean Solution();
