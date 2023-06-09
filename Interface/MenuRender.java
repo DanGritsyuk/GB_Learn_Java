@@ -49,7 +49,7 @@ public class MenuRender {
         }
         int pageCount = _pagesMap.size();
 
-        // ConsoleManager.HideCursor(true);
+        ConsoleManager.HideCursor(true);
         DrawMenu(page);
         while (true) {
             int key = _cm.GetKeyEvent();
