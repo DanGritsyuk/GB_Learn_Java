@@ -15,7 +15,7 @@ public abstract class Exercise {
 
     private String _description;
     private String _borderLine = "==========================================";
-    protected ConsoleManager _cm = new ConsoleManager();
+    protected ConsoleManager _cm = new ConsoleManager(false);
 
     public abstract boolean Solution();
 
@@ -40,7 +40,7 @@ public abstract class Exercise {
         _cm.PrintText("\n");
         Map<String, List<String>> menuData = new HashMap<String, List<String>>();
         menuData.put("Выберите следующий шаг:", Arrays.asList("Выход в главное меню.", "Начать заново."));
-        var menu = new MenuRender(menuData, 0, true, false, "", "", "");
+        var menu = new MenuRender(menuData, 5, true, false, "", "", "");
 
         int answer = menu.StartRenderMenu(0);
 
@@ -49,10 +49,10 @@ public abstract class Exercise {
 
     private void DrawHeader() {
         ConsoleManager.ConsoleClear();
-        _cm.PrintText(this._description + "\n" + this._borderLine);
+        _cm.PrintText(this._description + "\n" + this._borderLine + "\n");
     }
 
     private void DrawFooter() {
-        _cm.PrintText("\n" + this._borderLine);
+        _cm.PrintText("\n\n" + this._borderLine);
     }
 }
