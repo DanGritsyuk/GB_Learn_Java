@@ -18,19 +18,22 @@ public class MenuRender {
         this._isEscActive = isEscActive;
         this._showHelpControl = showHelpControl;
         this._frameText = frameText;
-        this._prefix = prefix == "" ? "> " : prefix;
-        this._prefixMark = prefixMark == "" ? " ".repeat(prefix.length()) : prefixMark;
+        this._prefix = prefix.isEmpty() ? "> " : prefix;
+        this._prefixMark = prefixMark;
+        this._largestLine = GetLargestLineLength();
         this._pagesMap = SplitDataToPages(_menuData, _consoleLines, HEADER_LINE_COUNT);
     }
 
     private Map<String, List<String>> _menuData;
     private int _consoleLines;
+    private int _largestLine;
+    private int _helpTextLines = 0;
     private boolean _isEscActive;
     private boolean _showHelpControl;
     private String _frameText;
     private String _prefix;
     private String _prefixMark;
-    private ConsoleManager _consoleManager = new ConsoleManager(false);
+    private ConsoleManager _cm = new ConsoleManager(false);
     private Set<PageData> _pagesMap;
     private final int HEADER_LINE_COUNT = 2;
 
@@ -46,13 +49,14 @@ public class MenuRender {
         }
         int pageCount = _pagesMap.size();
 
-        ConsoleManager.HideCursor(true);
+        // ConsoleManager.HideCursor(true);
+        DrawMenu(page);
         while (true) {
-            DrawMenu(page, pageCount);
-            int key = _consoleManager.GetKeyEvent();
+            int key = _cm.GetKeyEvent();
             switch (key) {
                 case KeyEvent.VK_ENTER:
                     ConsoleManager.HideCursor(false);
+                    ClearConsoleText();
                     return page.currentLineIndex + page.startLineIndex + 1;
                 case KeyEvent.VK_UP:
                     if (page.currentLineIndex > 0) {
@@ -67,20 +71,25 @@ public class MenuRender {
                 case KeyEvent.VK_LEFT:
                     if (page.pageId > 1) {
                         page = GetNexPage(page, _pagesMap, -1, _prefix.length());
+                        ClearConsoleText();
                     }
                     break;
                 case KeyEvent.VK_RIGHT:
                     if (page.pageId < pageCount) {
                         page = GetNexPage(page, _pagesMap, 1, _prefix.length());
+                        ClearConsoleText();
                     }
                     break;
                 case KeyEvent.VK_ESCAPE:
                     if (_isEscActive) {
                         ConsoleManager.HideCursor(false);
+                        ClearConsoleText();
                         return 0;
                     }
                     break;
             }
+            SetCursorStartPossition();
+            DrawMenu(page);
         }
     }
 
@@ -103,69 +112,74 @@ public class MenuRender {
         throw new Exception("Page not found!");
     }
 
-    private void DrawMenu(PageData page, int pagesCount) {
+    private void DrawMenu(PageData page) {
         int blockIdCount = 0;
-        int largestLine = GetLargestLineLength(page.pageData);
-        ConsoleManager.ConsoleClear();
-        _consoleManager.PrintText(_frameText);
+        _cm.PrintText(_frameText);
         for (String key : page.pageData.keySet()) {
             if (blockIdCount > 0) {
-                _consoleManager.PrintText();
+                _cm.PrintText();
             }
-            _consoleManager.PrintText(key);
+            _cm.PrintText(key);
             List<String> pageData = page.pageData.get(key);
             for (int i = 0; i < pageData.size(); i++) {
+                ClearLine();
                 i += blockIdCount;
                 boolean isSelected = i == page.currentLineIndex;
                 String prToConsole;
                 if (_prefixMark.equals("")) {
                     prToConsole = isSelected ? _prefix : " ".repeat(_prefix.length());
-                    _consoleManager.PrintText(prToConsole + pageData.get(i));
+                    _cm.PrintText(prToConsole + pageData.get(i));
                 } else {
                     prToConsole = isSelected ? pageData.get(i).replace(_prefixMark, _prefix)
                             : pageData.get(i).replace(_prefixMark, " ".repeat(_prefixMark.length()));
-                    _consoleManager.PrintText(prToConsole);
+                    _cm.PrintText(prToConsole);
                 }
             }
             blockIdCount += pageData.size();
         }
         if (_showHelpControl) {
-            String strPageNumbers = "";
-            if (pagesCount > 1) {
-                strPageNumbers = "▪️".repeat(pagesCount);
-                String strPageId = String.valueOf(page.pageId);
-                for (int i = 0; i < strPageId.length(); i++) {
-                    strPageNumbers = strPageNumbers.substring(0, page.pageId - 1 + i) + strPageId.charAt(i)
-                            + strPageNumbers.substring(page.pageId + i);
-                }
-            }
-            String indent = " ".repeat(50);
-            if (pagesCount > 2) {
-                if (page.pageId > 1) {
-                    strPageNumbers = "← " + strPageNumbers;
-                } else {
-                    strPageNumbers = "  " + strPageNumbers;
-                }
-                if (page.pageId < pagesCount) {
-                    strPageNumbers += " →";
-                } else {
-                    strPageNumbers += "  ";
-                }
-            }
-            _consoleManager.PrintText("\n".repeat(_consoleLines - page.linesCount - page.pageData.size() * 2) + indent
-                    + strPageNumbers);
-            String padding = "=".repeat(largestLine);
-            String pagesSwitchInfo = pagesCount > 1 ? "← → - переключать страницы. " : "";
-            _consoleManager.PrintText(padding + "\n↑ ↓ - перемещаться между строками. " + pagesSwitchInfo
-                    + "Enter - выбрать задачу. Для выхода нажмите Esc.\n");
+            DrawHelpText(page);
         }
-        _consoleManager.PrintText();
     }
 
-    private static int GetLargestLineLength(Map<String, List<String>> menuData) {
+    private void DrawHelpText(PageData page) {
+        int pagesCount = _pagesMap.size();
+
+        String strPageNumbers = "";
+        if (pagesCount > 1) {
+            strPageNumbers = "▪️".repeat(pagesCount);
+            String strPageId = String.valueOf(page.pageId);
+            for (int i = 0; i < strPageId.length(); i++) {
+                strPageNumbers = strPageNumbers.substring(0, page.pageId - 1 + i) + strPageId.charAt(i)
+                        + strPageNumbers.substring(page.pageId + i);
+            }
+        }
+        String indent = " ".repeat(50);
+        if (pagesCount > 2) {
+            if (page.pageId > 1) {
+                strPageNumbers = "← " + strPageNumbers;
+            } else {
+                strPageNumbers = "  " + strPageNumbers;
+            }
+            if (page.pageId < pagesCount) {
+                strPageNumbers += " →";
+            } else {
+                strPageNumbers += "  ";
+            }
+        }
+        String padding = "\n".repeat(_consoleLines - page.linesCount - page.pageData.size() * 2) + indent
+                + strPageNumbers + "\n" + "=".repeat(_largestLine);
+        String pagesSwitchInfo = pagesCount > 1 ? "Стрелки право/лево - переключать страницы. " : "";
+        padding += "\nСтрелки вверх/вниз - перемещаться между строками. " + pagesSwitchInfo
+                + "Enter - выбрать задачу. Для выхода нажмите Esc.\n\n";
+        _cm.PrintText(padding, "");
+        _helpTextLines = (int) padding.chars().filter(chr -> chr == '\n').count();
+    }
+
+    private int GetLargestLineLength() {
         int largestLineLength = 0;
-        for (String key : menuData.keySet()) {
-            List<String> value = menuData.get(key);
+        for (String key : _menuData.keySet()) {
+            List<String> value = _menuData.get(key);
             if (value.size() == 0) {
                 continue;
             }
@@ -174,7 +188,10 @@ public class MenuRender {
                 largestLineLength = maxLength;
             }
         }
-        return largestLineLength;
+
+        int prLength = _prefix.length();
+        int prMarkLength = _prefixMark.length();
+        return largestLineLength + (prLength > prMarkLength ? prLength : prMarkLength);
     }
 
     private static int LineCount(Map<String, List<String>> menuData) {
@@ -221,5 +238,27 @@ public class MenuRender {
         page = pagesMap.stream().filter(p -> p.pageId == pageId + step).findFirst().get();
         page.currentLineIndex = currentIndex < page.linesCount ? currentIndex : page.linesCount - 1;
         return page;
+    }
+
+    private void ClearConsoleText() {
+        GoToStartPossition(this::ClearLine);
+    }
+
+    private void SetCursorStartPossition() {
+        GoToStartPossition(null);
+    }
+
+    private void GoToStartPossition(Runnable methodForLines) {
+        for (int i = 1; i < _consoleLines + _helpTextLines; i++) {
+            if (methodForLines != null) {
+                methodForLines.run();
+            }
+            _cm.PrintText("\033[F", "");
+        }
+    }
+
+    private void ClearLine() {
+        _cm.PrintText(" ".repeat(_largestLine), "");
+        _cm.PrintText("\b".repeat(_largestLine), "");
     }
 }

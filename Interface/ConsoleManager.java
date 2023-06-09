@@ -5,11 +5,20 @@ import java.util.Scanner;
 public class ConsoleManager {
 
     public ConsoleManager() {
-        this._cs = new Scanner(System.in, "cp866");
+        SetTextCode("");
+    }
+
+    public ConsoleManager(String charsetName) {
+        SetTextCode(charsetName);
     }
 
     public ConsoleManager(Boolean onRead) {
-        this._cs = new Scanner(System.in, "cp866");
+        SetTextCode("");
+        this._onRead = onRead;
+    }
+
+    public ConsoleManager(String charsetName, Boolean onRead) {
+        SetTextCode(charsetName);
         this._onRead = onRead;
     }
 
@@ -57,6 +66,10 @@ public class ConsoleManager {
         System.out.print(text);
     }
 
+    public int GetKeyEvent() {
+        return KeyEventManager.Start();
+    }
+
     public static void ConsoleClear() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -70,8 +83,11 @@ public class ConsoleManager {
         }
     }
 
-    public int GetKeyEvent() {
-        return KeyEventManager.Start();
+    private void SetTextCode(String charsetName) {
+        if (charsetName.isEmpty()) {
+            charsetName = "cp866";
+        }
+        _cs = new Scanner(System.in, charsetName);
     }
 
     private void ConsoleReading(String text) {
