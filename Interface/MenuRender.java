@@ -123,8 +123,7 @@ public class MenuRender {
             List<String> pageData = page.pageData.get(key);
             for (int i = 0; i < pageData.size(); i++) {
                 ClearLine();
-                i += blockIdCount;
-                boolean isSelected = i == page.currentLineIndex;
+                boolean isSelected = i + blockIdCount == page.currentLineIndex;
                 String prToConsole;
                 String lineText = pageData.get(i);
                 if (_prefixMark.equals("")) {
@@ -196,7 +195,7 @@ public class MenuRender {
         int prLength = _prefix.length();
         int prMarkLength = _prefixMark.length();
         largestLineLength += (prLength > prMarkLength ? prLength : prMarkLength);
-        return largestLineLength > LINE_MAX_CHARACTER_COUNT ? largestLineLength : LINE_MAX_CHARACTER_COUNT;
+        return largestLineLength > LINE_MAX_CHARACTER_COUNT ? LINE_MAX_CHARACTER_COUNT : largestLineLength;
     }
 
     private static int LineCount(Map<String, List<String>> menuData) {
