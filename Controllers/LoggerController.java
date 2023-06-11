@@ -28,13 +28,13 @@ public class LoggerController {
 
     private void CreateLogFile() throws IOException {
         // Создаем папку для логов, если её нет
-        File logFolder = new File(LOG_FOLDER);
+        File logFolder = new File(_folder);
         if (!logFolder.exists()) {
             logFolder.mkdir();
         }
 
         // Создаем файл лога с названием вида "logs/2021-12-31.log"
-        String fileName = LOG_FOLDER + "/" + DATE_FORMAT.format(Calendar.getInstance().getTime()) + ".log";
+        String fileName = _folder + "\\" + DATE_FORMAT.format(Calendar.getInstance().getTime()) + ".log";
         logFile = new File(fileName);
         if (!logFile.exists()) {
             logFile.createNewFile();
