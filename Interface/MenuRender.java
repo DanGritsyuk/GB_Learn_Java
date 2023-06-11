@@ -36,11 +36,11 @@ public class MenuRender {
     private ConsoleManager _cm = new ConsoleManager(false);
     private Set<PageData> _pagesMap;
     private final int HEADER_LINE_COUNT = 2;
+    private final int LINE_MAX_CHARACTER_COUNT = 190;
 
     public int StartRenderMenu(int index) {
         int largestKey = GetLargestKeyTasks();
         _consoleLines = largestKey > _consoleLines ? largestKey : _consoleLines;
-
         PageData page = null;
         try {
             page = GetCheckCoordinates(index);
@@ -126,14 +126,18 @@ public class MenuRender {
                 i += blockIdCount;
                 boolean isSelected = i == page.currentLineIndex;
                 String prToConsole;
+                String lineText = pageData.get(i);
                 if (_prefixMark.equals("")) {
                     prToConsole = isSelected ? _prefix : " ".repeat(_prefix.length());
-                    _cm.PrintText(prToConsole + pageData.get(i));
+                    prToConsole += lineText;
                 } else {
-                    prToConsole = isSelected ? pageData.get(i).replace(_prefixMark, _prefix)
-                            : pageData.get(i).replace(_prefixMark, " ".repeat(_prefixMark.length()));
-                    _cm.PrintText(prToConsole);
+                    prToConsole = isSelected ? lineText.replace(_prefixMark, _prefix)
+                            : lineText.replace(_prefixMark, " ".repeat(_prefixMark.length()));
                 }
+                if (prToConsole.length() > LINE_MAX_CHARACTER_COUNT) {
+                    prToConsole = prToConsole.substring(0, LINE_MAX_CHARACTER_COUNT - 3) + "...";
+                }
+                _cm.PrintText(prToConsole);
             }
             blockIdCount += pageData.size();
         }
@@ -191,7 +195,8 @@ public class MenuRender {
 
         int prLength = _prefix.length();
         int prMarkLength = _prefixMark.length();
-        return largestLineLength + (prLength > prMarkLength ? prLength : prMarkLength);
+        largestLineLength += (prLength > prMarkLength ? prLength : prMarkLength);
+        return largestLineLength > LINE_MAX_CHARACTER_COUNT ? largestLineLength : LINE_MAX_CHARACTER_COUNT;
     }
 
     private static int LineCount(Map<String, List<String>> menuData) {

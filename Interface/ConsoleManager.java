@@ -95,4 +95,22 @@ public class ConsoleManager {
             _frame.append(text);
         }
     }
+
+    public static String СompressString(String input) {
+        StringBuilder result = new StringBuilder();
+        int count = 1;
+        char prevChar = input.charAt(0);
+        for (int i = 1; i < input.length(); i++) {
+            char currentChar = input.charAt(i);
+            if (currentChar == prevChar) {
+                count++;
+            } else {
+                result.append(prevChar).append(count);
+                prevChar = currentChar;
+                count = 1;
+            }
+        }
+        result.append(prevChar).append(count);
+        return result.toString();
+    }
 }
