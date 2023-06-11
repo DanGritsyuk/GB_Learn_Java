@@ -1,13 +1,8 @@
 package Exercises.Homework2;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import Controllers.SaveLoadFileController;
+import Controllers.JsonParseController;
 import Exercises.Exercise;
 
 public class Exercise5 extends Exercise {
@@ -18,25 +13,10 @@ public class Exercise5 extends Exercise {
     @Override
     public boolean Solution() {
         var message = "Введите строку параметров или путь до файла, где она хранится:";
-        String strJson = _cm.InputText(message + "\n");
-        var filePath = strJson.replace("\"", "");
-
-        if (IsFilePath(filePath)) {
-            int strJsonLength = strJson.length();
-            strJson = GetFromFile(filePath);
-            DrawLineInFile(strJsonLength, strJson);
-        }
-
-        Map<String, String> map = new HashMap<>();
-        Pattern pattern = Pattern.compile("\"(.*?)\":\"(.*?)\"");
-        Matcher matcher = pattern.matcher(strJson);
-        while (matcher.find()) {
-            map.put(matcher.group(1), matcher.group(2));
-        }
+        Map<String, String> map = JsonParseController.ReadJsonToMap(_cm, message);
 
         StringBuilder whereClause = new StringBuilder();
         boolean firstParam = true;
-
         for (String key : map.keySet()) {
             String value = map.get(key);
             if (!value.equals("null")) {
@@ -53,24 +33,5 @@ public class Exercise5 extends Exercise {
         String sqlQuery = "select * from students" + whereClause.toString();
         _cm.PrintText(sqlQuery);
         return false;
-    }
-
-    private Boolean IsFilePath(String filePath) {
-        File file = new File(filePath);
-        return file.isFile();
-    }
-
-    private String GetFromFile(String filePath) {
-        try {
-            return SaveLoadFileController.LoadFromFile(filePath)[0];
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
-
-    private void DrawLineInFile(int charCount, String strLine) {
-        _cm.PrintText("\033[F", " ".repeat(charCount));
-        _cm.PrintText("\b".repeat(charCount), strLine + "\n\n");
     }
 }

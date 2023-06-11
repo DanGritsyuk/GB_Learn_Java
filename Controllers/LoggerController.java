@@ -1,60 +1,66 @@
 package Controllers;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+import java.util.logging.XMLFormatter;
 
 public class LoggerController {
-    private static final String LOG_FOLDER = "logs";
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
-    private String _folder;
+    private String _logDirectory;
+    private String _extension;
+    private Logger _logger;
 
-    private File logFile;
-    private FileWriter fileWriter;
+    public LoggerController(String loggerName, Boolean isXMLFormat) {
+        try {
+            this._logDirectory = "Logs\\" + loggerName;
+            _extension = isXMLFormat ? ".xml" : ".log";
+            _logger = Logger.getLogger(loggerName);
+            _logger.setLevel(Level.INFO);
+            CreateLogFile();
 
-    public LoggerController() throws IOException {
-        this._folder = LOG_FOLDER;
-        CreateLogFile();
+            FileHandler fileHandler = new FileHandler(GetLogFilePath(), true);
+            if (isXMLFormat) {
+                fileHandler.setFormatter(new XMLFormatter());
+            } else {
+                fileHandler.setFormatter(new SimpleFormatter());
+            }
+            _logger.addHandler(fileHandler);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public LoggerController(String folder) throws IOException {
-        this._folder = LOG_FOLDER + "\\" + folder;
-        CreateLogFile();
+    public void Log(String message) {
+        _logger.info(message);
+    }
+
+    public void Log(String level, String message) {
+        _logger.log(Level.parse(level), message);
     }
 
     private void CreateLogFile() throws IOException {
-        // Создаем папку для логов, если её нет
-        File logFolder = new File(_folder);
-        if (!logFolder.exists()) {
-            logFolder.mkdir();
+        Path logPath = Paths.get(_logDirectory);
+        if (!Files.exists(logPath)) {
+            Files.createDirectories(logPath);
         }
-
-        // Создаем файл лога с названием вида "logs/2021-12-31.log"
-        String fileName = _folder + "\\" + DATE_FORMAT.format(Calendar.getInstance().getTime()) + ".log";
-        logFile = new File(fileName);
-        if (!logFile.exists()) {
-            logFile.createNewFile();
+        String logFilePath = GetLogFilePath();
+        Path path = Paths.get(logFilePath);
+        if (!Files.exists(path)) {
+            Files.createFile(path);
         }
-
-        // Открываем поток для записи в файл
-        fileWriter = new FileWriter(logFile, true);
     }
 
-    public void log(String message) throws IOException {
-        // Если текущий файл лога не соответствует текущей дате, то создаем новый файл
-        String currentDate = DATE_FORMAT.format(Calendar.getInstance().getTime());
-        if (!currentDate.equals(DATE_FORMAT.format(logFile.lastModified()))) {
-            fileWriter.close();
-            CreateLogFile();
-        }
-
-        // Записываем сообщение в лог с указанием времени
-        String logMessage = "[" + TIME_FORMAT.format(Calendar.getInstance().getTime()) + "] " + message + "\n";
-        fileWriter.write(logMessage);
-        fileWriter.flush();
+    private String GetLogFilePath() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String currentDate = dateFormat.format(new Date());
+        return _logDirectory + "/" + currentDate + _extension;
     }
 }

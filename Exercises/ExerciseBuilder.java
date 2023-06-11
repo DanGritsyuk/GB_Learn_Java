@@ -5,6 +5,8 @@ import Exercises.Homework1.Exercise2;
 import Exercises.Homework1.Exercise3;
 import Exercises.Homework1.Exercise4;
 import Exercises.Homework2.Exercise5;
+import Exercises.Homework2.Exercise6;
+import Exercises.Homework2.Exercise7;
 
 public class ExerciseBuilder {
     public static Exercise GetExerciseObject(ExerciseData exerciseData, int taskNum) throws Exception {
@@ -21,6 +23,10 @@ public class ExerciseBuilder {
                 return new Exercise4(taskText);
             case 5:
                 return new Exercise5(taskText);
+            case 6:
+                return new Exercise6(taskText);
+            case 7:
+                return new Exercise7(taskText);
             default:
                 throw new Exception("ЗАДАЧА ЕЩЕ НЕ РЕАЛИЗОВАНА");
         }
