@@ -1,6 +1,8 @@
 package Exercises.Homework2;
 
 import Exercises.Exercise;
+import Decorators.LogDecorator;
+import Exercises.Homework1.Exercise3;
 
 public class Exercise8 extends Exercise {
     public Exercise8(String description) {
@@ -9,8 +11,8 @@ public class Exercise8 extends Exercise {
 
     @Override
     public boolean Solution() {
-        _cm.PrintText("Задача в разработке...\n");
-        _cm.InputText("Нажмите Enter");
-        return true;
+        Exercise3 calculator = new Exercise3("Простой калькулятор");
+        Exercise3 calculatorWithLog = new LogDecorator(calculator);
+        return calculatorWithLog.Solution();
     }
 }

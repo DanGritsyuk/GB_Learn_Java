@@ -17,6 +17,10 @@ public abstract class Exercise {
     private String _borderLine = "==========================================";
     protected ConsoleManager _cm = new ConsoleManager(false);
 
+    public String GetDescription() {
+        return _description;
+    }
+
     public abstract boolean Solution();
 
     public void Start() {

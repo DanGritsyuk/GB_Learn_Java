@@ -8,23 +8,18 @@ public class Exercise3 extends Exercise {
         super(description);
     }
 
+    public String strResult = "";
+
+    private Double _num1 = (double) 0;
+    private Double _num2 = (double) 0;
+    private char _operator = 0;
+
     @Override
     public boolean Solution() {
-        double num1, num2, result;
-        char operator;
+        GetDataFromConsole();
+        GetResoultToString();
+        _cm.PrintText(this.strResult);
 
-        num1 = Double.parseDouble(_cm.InputText("Введите первое число: "));
-        operator = _cm.InputText("Введите оператор (+, -, *, /): ").charAt(0);
-        num2 = Double.parseDouble(_cm.InputText("Введите второе число: "));
-
-        try {
-            result = Calculate(num1, num2, operator);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        _cm.PrintText(num1 + " " + operator + " " + num2 + " = " + result);
         return false;
     }
 
@@ -50,5 +45,20 @@ public class Exercise3 extends Exercise {
                 throw new Exception("Ошибка: неверный оператор");
         }
         return result;
+    }
+
+    private void GetResoultToString() {
+        try {
+            Double result = Calculate(_num1, _num2, _operator);
+            this.strResult = _num1 + " " + _operator + " " + _num2 + " = " + result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void GetDataFromConsole() {
+        _num1 = Double.parseDouble(_cm.InputText("Введите первое число: "));
+        _operator = _cm.InputText("Введите оператор (+, -, *, /): ").charAt(0);
+        _num2 = Double.parseDouble(_cm.InputText("Введите второе число: "));
     }
 }

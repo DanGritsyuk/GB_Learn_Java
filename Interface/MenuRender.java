@@ -125,7 +125,7 @@ public class MenuRender {
                 ClearLine();
                 boolean isSelected = i + blockIdCount == page.currentLineIndex;
                 String prToConsole;
-                String lineText = pageData.get(i);
+                String lineText = pageData.get(i).replace("\n", " ");
                 if (_prefixMark.equals("")) {
                     prToConsole = isSelected ? _prefix : " ".repeat(_prefix.length());
                     prToConsole += lineText;
