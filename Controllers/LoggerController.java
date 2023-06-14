@@ -46,6 +46,13 @@ public class LoggerController {
         _logger.log(Level.parse(level), message);
     }
 
+    public void Dispose() {
+        var fileHandler = _logger.getHandlers()[0];
+        fileHandler.close();
+        _logger.removeHandler(fileHandler);
+        _logger = null;
+    }
+
     private void CreateLogFile() throws IOException {
         Path logPath = Paths.get(_logDirectory);
         if (!Files.exists(logPath)) {
@@ -61,6 +68,6 @@ public class LoggerController {
     private String GetLogFilePath() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String currentDate = dateFormat.format(new Date());
-        return _logDirectory + "/" + currentDate + _extension;
+        return _logDirectory + "\\" + currentDate + _extension;
     }
 }

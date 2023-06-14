@@ -11,19 +11,20 @@ public class Program {
 
         var exData = new ExerciseData();
         var menu = new MenuRender(exData.descriptions, CONST_MENU_COUNT, true, true,
-                "", "", "");
+                "", "", "", "");
 
         boolean startApp = true;
         while (startApp) {
             ConsoleManager.ConsoleClear();
             taskId = menu.StartRenderMenu(taskId - 1);
+            menu.footerText = "";
             try {
                 Exercise exercise = ExerciseBuilder.GetExerciseObject(exData, taskId);
                 if (exercise != null) {
                     exercise.Start();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                menu.footerText = e.getMessage();
             }
 
             startApp = taskId != 0;

@@ -12,17 +12,23 @@ import java.util.TreeMap;
 public class MenuRender {
 
     public MenuRender(Map<String, List<String>> menuData, int consoleLines,
-            boolean isEscActive, boolean showHelpControl, String frameText, String prefix, String prefixMark) {
+            boolean isEscActive, boolean showHelpControl, String headerText, String footerText, String prefix,
+            String prefixMark) {
+        this.headerText = headerText;
+        this.footerText = footerText;
+
         this._menuData = menuData;
         this._consoleLines = consoleLines;
         this._isEscActive = isEscActive;
         this._showHelpControl = showHelpControl;
-        this._frameText = frameText;
         this._prefix = prefix.isEmpty() ? "> " : prefix;
         this._prefixMark = prefixMark;
         this._largestLine = GetLargestLineLength();
         this._pagesMap = SplitDataToPages(_menuData, _consoleLines, HEADER_LINE_COUNT);
     }
+
+    public String headerText;
+    public String footerText;
 
     private Map<String, List<String>> _menuData;
     private int _consoleLines;
@@ -30,7 +36,6 @@ public class MenuRender {
     private int _helpTextLines = 0;
     private boolean _isEscActive;
     private boolean _showHelpControl;
-    private String _frameText;
     private String _prefix;
     private String _prefixMark;
     private ConsoleManager _cm = new ConsoleManager(false);
@@ -114,7 +119,7 @@ public class MenuRender {
 
     private void DrawMenu(PageData page) {
         int blockIdCount = 0;
-        _cm.PrintText(_frameText);
+        _cm.PrintText(this.headerText);
         for (String key : page.pageData.keySet()) {
             if (blockIdCount > 0) {
                 _cm.PrintText();
@@ -143,6 +148,9 @@ public class MenuRender {
         if (_showHelpControl) {
             DrawHelpText(page);
         }
+        if (!footerText.isEmpty()) {
+            _cm.PrintText(this.footerText);
+        }
     }
 
     private void DrawHelpText(PageData page) {
@@ -150,7 +158,7 @@ public class MenuRender {
 
         String strPageNumbers = "";
         if (pagesCount > 1) {
-            strPageNumbers = "▪️".repeat(pagesCount);
+            strPageNumbers = "-".repeat(pagesCount);
             String strPageId = String.valueOf(page.pageId);
             for (int i = 0; i < strPageId.length(); i++) {
                 strPageNumbers = strPageNumbers.substring(0, page.pageId - 1 + i) + strPageId.charAt(i)
@@ -160,12 +168,12 @@ public class MenuRender {
         String indent = " ".repeat(50);
         if (pagesCount > 2) {
             if (page.pageId > 1) {
-                strPageNumbers = "← " + strPageNumbers;
+                strPageNumbers = "< " + strPageNumbers;
             } else {
                 strPageNumbers = "  " + strPageNumbers;
             }
             if (page.pageId < pagesCount) {
-                strPageNumbers += " →";
+                strPageNumbers += " >";
             } else {
                 strPageNumbers += "  ";
             }

@@ -29,6 +29,7 @@ public class Exercise6 extends Exercise {
             logger.Log("Итерация " + (i + 1) + ": " + Arrays.toString(array));
         }
         logger.Log("Результат: " + Arrays.toString(array));
+        logger.Dispose();
         return false;
     }
 }

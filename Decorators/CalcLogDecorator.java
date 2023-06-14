@@ -16,6 +16,7 @@ public class CalcLogDecorator extends Exercise3 {
         Boolean result = super.Solution();
         String message = super.strResult;
         _logger.Log(message);
+        _logger.Dispose();
         return result;
     }
 

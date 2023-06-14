@@ -44,7 +44,7 @@ public abstract class Exercise {
         _cm.PrintText("\n");
         Map<String, List<String>> menuData = new HashMap<String, List<String>>();
         menuData.put("Выберите следующий шаг:", Arrays.asList("Выход в главное меню.", "Начать заново."));
-        var menu = new MenuRender(menuData, 5, true, false, "", "", "");
+        var menu = new MenuRender(menuData, 5, true, false, "", "", "", "");
 
         int answer = menu.StartRenderMenu(0);
 

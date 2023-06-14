@@ -34,7 +34,8 @@ public class ExerciseBuilder {
             case 9:
                 return new Exercise9(taskText);
             default:
-                throw new Exception("ЗАДАЧА ЕЩЕ НЕ РЕАЛИЗОВАНА");
+                String nameTask = taskText.length() < 51 ? taskText : taskText.substring(0, 47) + "...";
+                throw new Exception("ЗАДАЧА <" + nameTask + "> ЕЩЕ НЕ РЕАЛИЗОВАНА");
         }
     }
 }
