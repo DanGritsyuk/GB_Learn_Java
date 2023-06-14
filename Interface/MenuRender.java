@@ -3,11 +3,11 @@ package Interface;
 import java.awt.event.KeyEvent;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class MenuRender {
 
@@ -211,7 +211,7 @@ public class MenuRender {
         int pageLineCount = 0;
         int pageFirstIndex = 0;
         int pageId = 1;
-        Map<String, List<String>> pageData = new HashMap<>();
+        Map<String, List<String>> pageData = new TreeMap<String, List<String>>();
         Set<PageData> pagesMap = new HashSet<>();
         int i = 0;
         for (String key : menuData.keySet()) {

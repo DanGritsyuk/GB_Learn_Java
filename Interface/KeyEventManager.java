@@ -24,10 +24,11 @@ public class KeyEventManager implements KeyListener {
     public static int Start() {
         int keyCode = 0;
         var frame = new JFrame("Key capture");
-        KeyEventManager menu = new KeyEventManager();
-        frame.addKeyListener(menu);
+        var keManager = new KeyEventManager();
+        frame.addKeyListener(keManager);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        frame.setFocusable(true);
         var keyEventRun = true;
         while (keyEventRun) {
             KeyEvent event = null;
