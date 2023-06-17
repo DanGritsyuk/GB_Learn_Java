@@ -15,7 +15,7 @@ public abstract class Exercise {
 
     private String _description;
     private String _borderLine = "==========================================";
-    protected ConsoleManager _cm = new ConsoleManager(false);
+    protected ConsoleManager _cm = new ConsoleManager();
 
     public String GetDescription() {
         return _description;
@@ -52,7 +52,7 @@ public abstract class Exercise {
     }
 
     private void DrawHeader() {
-        ConsoleManager.ConsoleClear();
+        _cm.ConsoleClear();
         _cm.PrintText(this._description + "\n" + this._borderLine + "\n");
     }
 

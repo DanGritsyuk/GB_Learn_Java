@@ -2,6 +2,8 @@ package Interface;
 
 import java.util.Scanner;
 
+import Controllers.LoggerController;
+
 public class ConsoleManager {
 
     public ConsoleManager() {
@@ -12,24 +14,27 @@ public class ConsoleManager {
         SetTextCode(charsetName);
     }
 
-    public ConsoleManager(Boolean onRead) {
-        SetTextCode("");
-        this._onRead = onRead;
+    public ConsoleManager(Boolean onLog) {
+        this._onLog = onLog;
+        SetFullSettings("");
     }
 
-    public ConsoleManager(String charsetName, Boolean onRead) {
-        SetTextCode(charsetName);
-        this._onRead = onRead;
+    public ConsoleManager(String charsetName, Boolean onLog) {
+        this._onLog = onLog;
+        SetFullSettings(charsetName);
     }
 
     private Scanner _cs;
     private StringBuilder _frame = new StringBuilder();
-    private Boolean _onRead = true;
+    private LoggerController _lc = null;
+    private Boolean _onLog = false;
 
     public String GetFrameText(Boolean toDelete) {
         var text = _frame.toString();
         if (toDelete) {
             _frame.delete(0, _frame.length());
+            _lc.Log("END LOG.");
+            _lc.Dispose();
         }
         return text;
     }
@@ -70,17 +75,17 @@ public class ConsoleManager {
         return KeyEventManager.Start();
     }
 
-    public static void ConsoleClear() {
+    public void ConsoleClear() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+        if (_onLog) {
+            _lc.Log("Clear console.");
+        }
     }
 
-    public static void HideCursor(boolean isHidden) {
-        if (isHidden) {
-            System.out.print("\033[?25l");
-        } else {
-            System.out.print("\033[?25h");
-        }
+    private void SetFullSettings(String charsetName) {
+        SetTextCode(charsetName);
+        _lc = _onLog ? new LoggerController(this.getClass().getName(), true) : null;
     }
 
     private void SetTextCode(String charsetName) {
@@ -91,8 +96,17 @@ public class ConsoleManager {
     }
 
     private void ConsoleReading(String text) {
-        if (_onRead) {
+        if (_onLog) {
             _frame.append(text);
+            _lc.Log(text);
+        }
+    }
+
+    public static void HideCursor(boolean isHidden) {
+        if (isHidden) {
+            System.out.print("\033[?25l");
+        } else {
+            System.out.print("\033[?25h");
         }
     }
 

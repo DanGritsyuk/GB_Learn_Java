@@ -38,7 +38,7 @@ public class MenuRender {
     private boolean _showHelpControl;
     private String _prefix;
     private String _prefixMark;
-    private ConsoleManager _cm = new ConsoleManager(false);
+    private ConsoleManager _cm = new ConsoleManager();
     private Set<PageData> _pagesMap;
     private final int HEADER_LINE_COUNT = 2;
     private final int LINE_MAX_CHARACTER_COUNT = 190;
@@ -178,8 +178,8 @@ public class MenuRender {
                 strPageNumbers += "  ";
             }
         }
-        String padding = "\n".repeat(_consoleLines - page.linesCount - page.pageData.size() * 2) + indent
-                + strPageNumbers + "\n" + "=".repeat(_largestLine);
+        String padding = "\n".repeat(_consoleLines - page.linesCount - page.pageData.size() * HEADER_LINE_COUNT)
+                + indent + strPageNumbers + "\n" + "=".repeat(_largestLine);
         String pagesSwitchInfo = pagesCount > 1 ? "Стрелки право/лево - переключать страницы. " : "";
         padding += "\nСтрелки вверх/вниз - перемещаться между строками. " + pagesSwitchInfo
                 + "Enter - выбрать задачу. Для выхода нажмите Esc.\n\n";
