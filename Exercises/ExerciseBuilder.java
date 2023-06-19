@@ -10,7 +10,7 @@ import Exercises.Homework2.Exercise7;
 import Exercises.Homework2.Exercise8;
 import Exercises.Homework3.Exercise9;
 import Exercises.Homework4.Exercise10;
-import Exercises.Homework4.Exercise11;
+import Exercises.Homework5.Exercise11;
 
 public class ExerciseBuilder {
     public static Exercise GetExerciseObject(ExerciseData exerciseData, int taskNum) throws Exception {

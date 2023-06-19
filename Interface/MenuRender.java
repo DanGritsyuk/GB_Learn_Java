@@ -7,15 +7,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
+import java.util.LinkedHashMap;
 
 public class MenuRender {
 
     public MenuRender(Map<String, List<String>> menuData, int consoleLines,
             boolean isEscActive, boolean showHelpControl, String headerText, String footerText, String prefix,
             String prefixMark) {
-        this.headerText = headerText;
-        this.footerText = footerText;
+        this.headerText = headerText == null ? "" : headerText;
+        this.footerText = footerText == null ? "" : footerText;
 
         this._menuData = menuData;
         this._consoleLines = consoleLines;
@@ -45,7 +45,7 @@ public class MenuRender {
 
     public int StartRenderMenu(int index) {
         int largestKey = GetLargestKeyTasks();
-        _consoleLines = largestKey > _consoleLines ? largestKey : _consoleLines;
+        _consoleLines = largestKey > _consoleLines ? largestKey + 1 : _consoleLines;
         PageData page = null;
         try {
             page = GetCheckCoordinates(index);
@@ -178,13 +178,17 @@ public class MenuRender {
                 strPageNumbers += "  ";
             }
         }
-        String padding = "\n".repeat(_consoleLines - page.linesCount - page.pageData.size() * HEADER_LINE_COUNT)
-                + indent + strPageNumbers + "\n" + "=".repeat(_largestLine);
         String pagesSwitchInfo = pagesCount > 1 ? "Стрелки право/лево - переключать страницы. " : "";
-        padding += "\nСтрелки вверх/вниз - перемещаться между строками. " + pagesSwitchInfo
-                + "Enter - выбрать задачу. Для выхода нажмите Esc.\n\n";
-        _cm.PrintText(padding, "");
-        _helpTextLines = (int) padding.chars().filter(chr -> chr == '\n').count();
+        String helpInfo = "Стрелки вверх/вниз - перемещаться между строками. " + pagesSwitchInfo
+                + "Enter - выбрать задачу. Для выхода нажмите Esc.";
+        _largestLine = helpInfo.length() > _largestLine ? helpInfo.length() : _largestLine;
+        String pagesInfo = indent + strPageNumbers + "\n" + "=".repeat(_largestLine);
+
+        String padding = "\n".repeat(_consoleLines - page.linesCount - page.pageData.size() * HEADER_LINE_COUNT);
+        padding += pagesInfo + "\n" + helpInfo;
+
+        _cm.PrintText(padding, "\n\n");
+        _helpTextLines = 6;
     }
 
     private int GetLargestLineLength() {
@@ -219,7 +223,7 @@ public class MenuRender {
         int pageLineCount = 0;
         int pageFirstIndex = 0;
         int pageId = 1;
-        Map<String, List<String>> pageData = new TreeMap<String, List<String>>();
+        Map<String, List<String>> pageData = new LinkedHashMap<String, List<String>>();
         Set<PageData> pagesMap = new HashSet<>();
         int i = 0;
         for (String key : menuData.keySet()) {
@@ -261,7 +265,8 @@ public class MenuRender {
     }
 
     private void GoToStartPossition(Runnable methodForLines) {
-        for (int i = 1; i < _consoleLines + _helpTextLines; i++) {
+        int backCount = _consoleLines - 1;
+        for (int i = 1; i < backCount + _helpTextLines; i++) {
             if (methodForLines != null) {
                 methodForLines.run();
             }

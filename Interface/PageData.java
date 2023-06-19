@@ -1,8 +1,8 @@
 package Interface;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class PageData {
     public int pageId;
@@ -24,7 +24,7 @@ public class PageData {
     private void SetClassData(int pageId, int startLineIndex, Map<String, List<String>> pageData) {
         this.pageId = pageId;
         this.startLineIndex = startLineIndex;
-        this.pageData = new TreeMap<>(pageData);
+        this.pageData = new LinkedHashMap<>(pageData);
         this.linesCount = TasksCount();
     }
 

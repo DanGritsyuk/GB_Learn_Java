@@ -1,13 +1,13 @@
 package Exercises;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class ExerciseData {
     public ExerciseData() {
-        descriptions = new TreeMap<>();
+        descriptions = new LinkedHashMap<>();
         descriptions.put("ДОМАШНЯЯ РАБОТА 1", Arrays.asList(
                 "Задание 1: Вычислить n-ое треугольного число (сумма чисел от 1 до n), n! (произведение чисел от 1 до n).",
                 "Задание 2: Вывести все простые числа от 1 до 1000.",
