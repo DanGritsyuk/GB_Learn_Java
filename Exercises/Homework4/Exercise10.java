@@ -1,5 +1,12 @@
+//Даны два Deque, цифры в обратном порядке.
+// [3,2,1,-] - пример Deque
+//[5,4,3]- пример второго Deque
+//1) -123 * 345 = -42 435
+//Ответ всегда - связный список, в обычном порядке
+//[-,4,2,4,3,5] - пример ответа
 package Exercises.Homework4;
 
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -12,40 +19,150 @@ public class Exercise10 extends Exercise {
 
     @Override
     public boolean Solution() {
-        _cm.PrintText("Задача в разработке.\n");
-        _cm.InputText("Нажмите Enter...\n");
+        Deque<Object> deque1 = new LinkedList<>(Arrays.asList(3, 2, 1, '-'));
+        Deque<Object> deque2 = new LinkedList<>(Arrays.asList(5, 4, 3));
 
-        return true;
+        _cm.PrintText("Первый: " + deque1);
+        _cm.PrintText("Второй: " + deque2);
+
+        Deque<Object> product = MultiplyDeque(deque1, deque2);
+        _cm.PrintText("Произведение: " + product);
+
+        Deque<Object> sum = SumDeque(deque1, deque2);
+        _cm.PrintText("Сумма: " + sum);
+
+        return false;
     }
 
-    public Deque<Integer> multiply(Deque<Integer> num1, Deque<Integer> num2) {
-        Deque<Integer> result = new LinkedList<>();
+    private static Deque<Object> MultiplyDeque(Deque<Object> deque1, Deque<Object> deque2) {
+        boolean negative = false;
+        if (deque1.peekLast().equals('-')) {
+            negative = !negative;
+            deque1.removeLast();
+        }
+        if (deque2.peekLast().equals('-')) {
+            negative = !negative;
+            deque2.removeLast();
+        }
+
+        int[] result = new int[deque1.size() + deque2.size()];
         int carry = 0;
-        for (int i = 0; i < num1.size(); i++) {
-            int digit1 = num1.removeFirst();
-            int tempCarry = 0;
-            Deque<Integer> tempResult = new LinkedList<>();
-            for (int j = 0; j < num2.size(); j++) {
-                int digit2 = num2.removeFirst();
-                int product = digit1 * digit2 + carry;
+        int i = 0;
+        for (Object obj1 : deque1) {
+            int digit1 = (int) obj1;
+            int j = 0;
+            for (Object obj2 : deque2) {
+                int digit2 = (int) obj2;
+                int product = digit1 * digit2 + carry + result[i + j];
                 carry = product / 10;
-                tempCarry = product % 10;
-                tempResult.addLast(tempCarry);
+                result[i + j] = product % 10;
+                j++;
             }
             if (carry > 0) {
-                tempResult.addLast(carry);
+                result[i + j] += carry;
                 carry = 0;
             }
-            for (int k = 0; k < i; k++) {
-                tempResult.addFirst(0);
+            i++;
+        }
+
+        Deque<Object> product = new LinkedList<>();
+        if (negative) {
+            product.add('-');
+        }
+        boolean leadingZeros = true;
+        for (int k = result.length - 1; k >= 0; k--) {
+            if (result[k] != 0) {
+                leadingZeros = false;
             }
-            // result = sum(result, tempResult);
-            num2.addAll(tempResult);
+            if (!leadingZeros) {
+                product.add(result[k]);
+            }
+        }
+        if (product.isEmpty()) {
+            product.add(0);
+        }
+        return product;
+    }
+
+    private static Deque<Object> SumDeque(Deque<Object> deque1, Deque<Object> deque2) {
+        boolean negative = false;
+        if (deque1.peekLast().equals('-') && deque2.peekLast().equals('-')) {
+            deque1.removeLast();
+            deque2.removeLast();
+            negative = true;
+        } else if (deque1.peekLast().equals('-')) {
+            deque1.removeLast();
+            return Subtract(deque2, deque1);
+        } else if (deque2.peekLast().equals('-')) {
+            deque2.removeLast();
+            return Subtract(deque1, deque2);
+        }
+
+        int[] result = new int[Math.max(deque1.size(), deque2.size()) + 1];
+        int carry = 0;
+        int i = 0;
+        while (!deque1.isEmpty() || !deque2.isEmpty()) {
+            int digit1 = deque1.isEmpty() ? 0 : (int) deque1.removeLast();
+            int digit2 = deque2.isEmpty() ? 0 : (int) deque2.removeLast();
+            int sum = digit1 + digit2 + carry;
+            carry = sum / 10;
+            result[i] = sum % 10;
+            i++;
         }
         if (carry > 0) {
-            result.addLast(carry);
+            result[i] += carry;
         }
-        // Collections.reverse(result.toArray());
-        return result;
+
+        Deque<Object> sum = new LinkedList<>();
+        if (negative) {
+            sum.add('-');
+        }
+        boolean leadingZeros = true;
+        for (int k = result.length - 1; k >= 0; k--) {
+            if (result[k] != 0) {
+                leadingZeros = false;
+            }
+            if (!leadingZeros) {
+                sum.add(result[k]);
+            }
+        }
+        if (sum.isEmpty()) {
+            sum.add(0);
+        }
+        return sum;
+    }
+
+    private static Deque<Object> Subtract(Deque<Object> deque1, Deque<Object> deque2) {
+        int[] result = new int[deque1.size()];
+        int borrow = 0;
+        int i = 0;
+        while (!deque1.isEmpty() || !deque2.isEmpty()) {
+            int digit1 = deque1.isEmpty() ? 0 : (int) deque1.removeLast();
+            int digit2 = deque2.isEmpty() ? 0 : (int) deque2.removeLast();
+            int difference = digit1 - digit2 - borrow;
+            if (difference < 0) {
+                difference += 10;
+                borrow = 1;
+            } else {
+                borrow = 0;
+            }
+            result[i] = difference;
+            i++;
+        }
+
+        Deque<Object> difference = new LinkedList<>();
+        boolean leadingZeros = true;
+        for (int k = result.length - 1; k >= 0; k--) {
+            if (result[k] != 0) {
+                leadingZeros = false;
+            }
+            if (!leadingZeros) {
+                difference.add(result[k]);
+            }
+        }
+        if (difference.isEmpty()) {
+            difference.add(0);
+        }
+        return difference;
     }
 }
