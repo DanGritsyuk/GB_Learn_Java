@@ -194,6 +194,9 @@ public class MenuRender {
     private int GetLargestLineLength() {
         int largestLineLength = 0;
         for (String key : _menuData.keySet()) {
+            if (largestLineLength < key.length()) {
+                largestLineLength = key.length();
+            }
             List<String> value = _menuData.get(key);
             if (value.size() == 0) {
                 continue;
@@ -236,7 +239,7 @@ public class MenuRender {
                 pageFirstIndex += page.linesCount;
                 pageData.clear();
             }
-            pageLineCount += countLinesKeyTasks + 2;
+            pageLineCount += countLinesKeyTasks + headerLineCount;
             pageData.put(key, menuData.get(key));
             if (i == menuData.keySet().size() - 1) {
                 pagesMap.add(new PageData(pageId, pageFirstIndex, pageData));

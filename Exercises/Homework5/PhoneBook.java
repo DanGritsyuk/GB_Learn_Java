@@ -3,14 +3,18 @@ package Exercises.Homework5;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class PhoneBook {
     public PhoneBook() {
-        _contacts = new HashMap<String, List<String>>();
+        _contacts = new TreeMap<String, List<String>>();
+    }
+
+    public PhoneBook(Map<String, List<String>> bookData) {
+        _contacts = bookData;
     }
 
     private Map<String, List<String>> _contacts;
@@ -34,7 +38,22 @@ public class PhoneBook {
         return _contacts.get(name);
     }
 
-    public List<String> getAllNamesList() {
+    public String GetPhoneByGlobalIndex(int globalIndex) {
+        String phone = "";
+        for (var key : _contacts.keySet()) {
+            List<String> phones = _contacts.get(key);
+            int phonesCount = phones.size();
+            if (globalIndex >= phonesCount) {
+                globalIndex -= phonesCount;
+            } else {
+                phone = _contacts.get(key).get(globalIndex);
+                break;
+            }
+        }
+        return phone;
+    }
+
+    public List<String> GetAllNamesList() {
         List<Map.Entry<String, List<String>>> list = new LinkedList<>(_contacts.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<String, List<String>>>() {
             @Override

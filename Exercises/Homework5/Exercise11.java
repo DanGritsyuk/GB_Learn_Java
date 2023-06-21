@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 
 import Exercises.Exercise;
 import Interface.MenuRender;
@@ -30,14 +33,9 @@ public class Exercise11 extends Exercise {
                     break;
                 case 2:
                     FindContact();
-                    PressEnterEvent(" ");
                     break;
                 case 3:
-                    if (_phoneBook.GetContacts().size() == 0) {
-                        PressEnterEvent("Справочник пуст.");
-                    } else {
-                        GetAllContacts();
-                    }
+                    GetAllContacts();
                     break;
 
                 default:
@@ -46,9 +44,6 @@ public class Exercise11 extends Exercise {
             }
         }
 
-        List<String> sortedNames = _phoneBook.getAllNamesList();
-        System.out.println("Имена в порядке убывания числа телефонов: " + sortedNames);
-
         return true;
     }
 
@@ -56,7 +51,7 @@ public class Exercise11 extends Exercise {
         Map<String, List<String>> menuData = new LinkedHashMap<String, List<String>>();
         menuData.put("ГЛАВНОЕ МЕНЮ", Arrays.asList("Добавить номер", "Найти контакт", "Просмотреть весь список"));
         menuData.put("---------", Arrays.asList("ВЫХОД"));
-        return SetMenuOptions(menuData, false);
+        return SetMenuOptions(menuData, 10, false, "");
     }
 
     private void SetContact() {
@@ -68,36 +63,64 @@ public class Exercise11 extends Exercise {
     }
 
     private void FindContact() {
-        var name = _cm.InputText("Введите фамилию: ");
-        ClearField(2);
+        int linesCount = 0;
+        Map<String, List<String>> menuData = new LinkedHashMap<String, List<String>>();
+        if (_phoneBook.GetContacts().size() > 0) {
+            var name = _cm.InputText("Введите фамилию: ");
+            ClearField(1);
 
-        List<String> ivanovPhones = _phoneBook.GetPhonesByName("Иванов");
-        _cm.PrintText("Телефоны " + name + ": " + ivanovPhones);
+            List<String> contactPhones = _phoneBook.GetPhonesByName(name);
+
+            if (contactPhones != null) {
+                menuData.put("Телефоны " + name + ":", contactPhones);
+                menuData.put("---------", Arrays.asList("Вернуться."));
+                linesCount = contactPhones.size() + 7;
+            }
+        }
+
+        OpenPhoneBook(menuData, linesCount, false);
     }
 
     private void GetAllContacts() {
-        SetMenuOptions(_phoneBook.GetContacts(), true);
+        OpenPhoneBook(_phoneBook.GetContacts(), 20, true);
     }
 
     private void ClearField(int linescount) {
         for (int i = 1; i <= linescount; i++) {
-            _cm.PrintText("\033[F", " ".repeat(100));
+            _cm.PrintText("\033[F", " ".repeat(100) + "\b".repeat(99));
         }
     }
 
-    private void PressEnterEvent(String message) {
+    private static void OpenPhoneBook(Map<String, List<String>> bookData, int consoleLines, Boolean showHelpMenu) {
+        if (bookData.size() == 0) {
+            PressEnterEvent("Справочник пуст.");
+        } else {
+            int phoneIndex = SetMenuOptions(bookData, consoleLines, showHelpMenu, "");
+            if (phoneIndex > 0) {
+                ToBuffer(phoneIndex, bookData);
+            }
+        }
+    }
+
+    private static void ToBuffer(int index, Map<String, List<String>> bookData) {
+        index -= 1;
+        var bufferPhoneBook = new PhoneBook(bookData);
+        String phone = bufferPhoneBook.GetPhoneByGlobalIndex(index);
+        StringSelection selection = new StringSelection(phone);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(selection, null);
+        PressEnterEvent("Телефон " + phone + " скопирован в буффер обмена.");
+    }
+
+    private static void PressEnterEvent(String message) {
         Map<String, List<String>> menuData = new LinkedHashMap<String, List<String>>();
         menuData.put(message, Arrays.asList("Нажмите Enter..."));
-        SetMenuOptions(menuData, false);
+        SetMenuOptions(menuData, 0, false, "  ");
     }
 
-    private static int SetMenuOptions(Map<String, List<String>> menuData, Boolean showHelpMenu) {
-        int consoleLines = 0;
-        if (menuData.size() > 1) {
-            consoleLines = 10;
-        }
-
-        MenuRender mr = new MenuRender(menuData, consoleLines, true, showHelpMenu, null, null, "", "");
+    private static int SetMenuOptions(Map<String, List<String>> menuData, int consoleLines, Boolean showHelpMenu,
+            String prefix) {
+        MenuRender mr = new MenuRender(menuData, consoleLines, true, showHelpMenu, null, null, prefix, "");
         return mr.StartRenderMenu(0);
     }
 }
