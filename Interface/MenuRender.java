@@ -21,8 +21,8 @@ public class MenuRender {
         this._consoleLines = consoleLines;
         this._isEscActive = isEscActive;
         this._showHelpControl = showHelpControl;
-        this._prefix = prefix.isEmpty() ? "> " : prefix;
-        this._prefixMark = prefixMark;
+        this._prefix = prefix == null || prefix.isEmpty() ? "> " : prefix;
+        this._prefixMark = prefixMark == null ? "" : prefixMark;
         this._largestLine = GetLargestLineLength();
         this._pagesMap = SplitDataToPages(_menuData, _consoleLines, HEADER_LINE_COUNT);
     }

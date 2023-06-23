@@ -20,7 +20,7 @@ public class PhoneBookModel {
         return _contacts;
     }
 
-    public void AddContact(String name, String phone) {
+    public void SetContact(String name, String phone) {
         if (_contacts.containsKey(name)) {
             Set<String> phones = _contacts.get(name);
             phones.add(phone);
@@ -49,5 +49,31 @@ public class PhoneBookModel {
             }
         }
         return phone;
+    }
+
+    public int GetFirstPhoneGlobalIndexByName(String name) {
+        int firstPhoneGlobalIndex = 0;
+        for (var key : _contacts.keySet()) {
+            if (!key.equals(name)) {
+                Set<String> phones = _contacts.get(key);
+                int phonesCount = phones.size();
+                firstPhoneGlobalIndex += phonesCount;
+            } else {
+                break;
+            }
+        }
+        return firstPhoneGlobalIndex;
+    }
+
+    public int GetAllPhonesCount() {
+        int count = 0;
+        for (Set<String> item : _contacts.values()) {
+            count += item.size();
+        }
+        return count;
+    }
+
+    public Boolean ContainsName(String name) {
+        return _contacts.containsKey(name);
     }
 }
