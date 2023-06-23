@@ -1,9 +1,11 @@
 package Exercises.Homework5;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -16,7 +18,7 @@ public class Exercise11 extends Exercise {
         super(description);
     }
 
-    private PhoneBook _phoneBook = new PhoneBook();
+    private PhoneBookModel _phoneBook = new PhoneBookModel();
 
     @Override
     public boolean Solution() {
@@ -51,7 +53,7 @@ public class Exercise11 extends Exercise {
         Map<String, List<String>> menuData = new LinkedHashMap<String, List<String>>();
         menuData.put("ГЛАВНОЕ МЕНЮ", Arrays.asList("Добавить номер", "Найти контакт", "Просмотреть весь список"));
         menuData.put("---------", Arrays.asList("ВЫХОД"));
-        return SetMenuOptions(menuData, 10, false, "");
+        return SetMenuOptions(menuData, 10, false, false, "");
     }
 
     private void SetContact() {
@@ -64,25 +66,24 @@ public class Exercise11 extends Exercise {
 
     private void FindContact() {
         int linesCount = 0;
-        Map<String, List<String>> menuData = new LinkedHashMap<String, List<String>>();
+        Map<String, Set<String>> menuData = new LinkedHashMap<String, Set<String>>();
         if (_phoneBook.GetContacts().size() > 0) {
             var name = _cm.InputText("Введите фамилию: ");
             ClearField(1);
 
-            List<String> contactPhones = _phoneBook.GetPhonesByName(name);
+            Set<String> contactPhones = _phoneBook.GetPhonesByName(name);
 
             if (contactPhones != null) {
                 menuData.put("Телефоны " + name + ":", contactPhones);
-                menuData.put("---------", Arrays.asList("Вернуться."));
                 linesCount = contactPhones.size() + 7;
             }
         }
 
-        OpenPhoneBook(menuData, linesCount, false);
+        OpenPhoneBook(menuData, linesCount, false, true);
     }
 
     private void GetAllContacts() {
-        OpenPhoneBook(_phoneBook.GetContacts(), 20, true);
+        OpenPhoneBook(_phoneBook.GetContacts(), 20, true, false);
     }
 
     private void ClearField(int linescount) {
@@ -91,20 +92,22 @@ public class Exercise11 extends Exercise {
         }
     }
 
-    private static void OpenPhoneBook(Map<String, List<String>> bookData, int consoleLines, Boolean showHelpMenu) {
+    private static void OpenPhoneBook(Map<String, Set<String>> bookData, int consoleLines, Boolean showHelpMenu,
+            Boolean subjoinBackMenuline) {
         if (bookData.size() == 0) {
             PressEnterEvent("Справочник пуст.");
         } else {
-            int phoneIndex = SetMenuOptions(bookData, consoleLines, showHelpMenu, "");
-            if (phoneIndex > 0) {
+            int phoneIndex = SetMenuOptions(ConvertPhonesToList(bookData), consoleLines, showHelpMenu,
+                    subjoinBackMenuline, "");
+            if (phoneIndex > 0 || phoneIndex < GetAllPhonesCount(bookData)) {
                 ToBuffer(phoneIndex, bookData);
             }
         }
     }
 
-    private static void ToBuffer(int index, Map<String, List<String>> bookData) {
+    private static void ToBuffer(int index, Map<String, Set<String>> bookData) {
         index -= 1;
-        var bufferPhoneBook = new PhoneBook(bookData);
+        var bufferPhoneBook = new PhoneBookModel(bookData);
         String phone = bufferPhoneBook.GetPhoneByGlobalIndex(index);
         StringSelection selection = new StringSelection(phone);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -115,12 +118,33 @@ public class Exercise11 extends Exercise {
     private static void PressEnterEvent(String message) {
         Map<String, List<String>> menuData = new LinkedHashMap<String, List<String>>();
         menuData.put(message, Arrays.asList("Нажмите Enter..."));
-        SetMenuOptions(menuData, 0, false, "  ");
+        SetMenuOptions(menuData, 0, false, false, "  ");
     }
 
     private static int SetMenuOptions(Map<String, List<String>> menuData, int consoleLines, Boolean showHelpMenu,
-            String prefix) {
+            Boolean subjoinBackMenuline, String prefix) {
+        if (subjoinBackMenuline) {
+            menuData.put("---------", Arrays.asList("Вернуться."));
+        }
         MenuRender mr = new MenuRender(menuData, consoleLines, true, showHelpMenu, null, null, prefix, "");
         return mr.StartRenderMenu(0);
+    }
+
+    private static Map<String, List<String>> ConvertPhonesToList(Map<String, Set<String>> menuData) {
+        Map<String, List<String>> result = new LinkedHashMap<>();
+        for (String key : menuData.keySet()) {
+            Set<String> phoneSet = menuData.get(key);
+            List<String> phoneList = new ArrayList<>(phoneSet);
+            result.put(key, phoneList);
+        }
+        return result;
+    }
+
+    private static int GetAllPhonesCount(Map<String, Set<String>> bookData) {
+        int count = 0;
+        for (Set<String> item : bookData.values()) {
+            count += item.size();
+        }
+        return count;
     }
 }
