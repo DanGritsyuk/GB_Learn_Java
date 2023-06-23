@@ -2,7 +2,7 @@ package Exercises.Homework2;
 
 import java.util.Map;
 
-import Controllers.JsonParseController;
+import Controllers.JsonXMLParseController;
 import Exercises.Exercise;
 
 public class Exercise5 extends Exercise {
@@ -13,7 +13,7 @@ public class Exercise5 extends Exercise {
     @Override
     public boolean Solution() {
         var message = "Введите строку параметров или путь до файла, где она хранится:";
-        Map<String, String> map = JsonParseController.ReadJsonToMap(_cm, message);
+        Map<String, String> map = JsonXMLParseController.ReadJsonToMap(_cm, message);
 
         StringBuilder whereClause = new StringBuilder();
         boolean firstParam = true;

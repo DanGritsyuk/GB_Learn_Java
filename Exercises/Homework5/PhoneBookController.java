@@ -35,7 +35,6 @@ public class PhoneBookController {
             _nameFilter = _phoneBook.ContainsName(name) ? name : "";
             if (_nameFilter.isEmpty()) {
                 _pbView.SayNameNotFound();
-                _nameFilter = null;
             }
         } else {
             _pbView.SayEmptyBook();
@@ -52,27 +51,37 @@ public class PhoneBookController {
     }
 
     public String GetPhone() {
+        int firstPhoneGlobalIndex = 0;
         if (_nameFilter == null && _phoneBook.GetContacts().size() != 0) {
             _pbView.viewMap = ConvertPhonesToList(_phoneBook.GetContacts());
-            int phoneIndex = _pbView.ShowData() - 1;
-
-            return _phoneBook.GetPhoneByGlobalIndex(phoneIndex);
         } else if (_nameFilter != null && !_nameFilter.isEmpty()) {
             List<String> contactPhones = new ArrayList<>(_phoneBook.GetPhonesByName(_nameFilter));
-            int firstPhoneGlobalIndex = _phoneBook.GetFirstPhoneGlobalIndexByName(_nameFilter);
+            firstPhoneGlobalIndex = _phoneBook.GetFirstPhoneGlobalIndexByName(_nameFilter);
 
             _pbView.viewMap = new LinkedHashMap<String, List<String>>();
             _pbView.viewMap.put(_nameFilter, contactPhones);
 
-            int phoneIndex = _pbView.ShowData() - 1 + firstPhoneGlobalIndex;
-
-            return _phoneBook.GetPhoneByGlobalIndex(phoneIndex);
+        } else {
+            _nameFilter = null;
+            return "";
         }
-        return "";
+
+        int phoneIndex = _pbView.ShowData();
+        if (phoneIndex == 0) {
+            return "";
+        }
+
+        phoneIndex = CollectIndex(phoneIndex, firstPhoneGlobalIndex);
+
+        return _phoneBook.GetPhoneByGlobalIndex(phoneIndex);
     }
 
     public void ReportResult(String message) {
         _pbView.SayResult(message);
+    }
+
+    private static int CollectIndex(int currentIndex, int firstPhoneGlobalIndex) {
+        return currentIndex - 1 + firstPhoneGlobalIndex;
     }
 
     private static Map<String, List<String>> ConvertPhonesToList(Map<String, Set<String>> menuData) {

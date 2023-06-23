@@ -3,7 +3,7 @@ package Exercises.Homework2;
 import java.util.List;
 import java.util.Map;
 
-import Controllers.JsonParseController;
+import Controllers.JsonXMLParseController;
 
 import Exercises.Exercise;
 
@@ -15,7 +15,7 @@ public class Exercise7 extends Exercise {
     @Override
     public boolean Solution() {
         var message = "Введите строку с данными учащихся или путь до файла, где она хранится:";
-        List<Map<String, String>> studentMap = JsonParseController.ReadJsonToArray(_cm, message);
+        List<Map<String, String>> studentMap = JsonXMLParseController.ReadJsonToArray(_cm, message);
 
         StringBuilder stringBuilder = new StringBuilder();
         for (Map<String, String> student : studentMap) {

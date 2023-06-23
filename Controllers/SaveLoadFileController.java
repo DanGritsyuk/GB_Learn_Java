@@ -11,8 +11,12 @@ import java.util.List;
 
 public class SaveLoadFileController {
 
-    public static void SaveToFile(String filePath, String data, Boolean append) throws IOException {
+    public static void SaveToFile(String filePath, String data, boolean append) throws IOException {
         File file = new File(filePath);
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+        }
         try (FileWriter fw = new FileWriter(file, append)) {
             try (BufferedWriter bw = new BufferedWriter(fw)) {
                 bw.write(data);

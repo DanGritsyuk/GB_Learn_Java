@@ -1,19 +1,33 @@
 package Exercises.Homework5;
 
+import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import Controllers.JsonXMLParseController;
+import Controllers.SaveLoadFileController;
+
 public class PhoneBookModel {
     public PhoneBookModel() {
-        _contacts = new TreeMap<String, Set<String>>();
+        StringBuilder sb = new StringBuilder();
+        try {
+            String[] xmlData = SaveLoadFileController.LoadFromFile(_dataPath);
+            if (xmlData != null) {
+                for (var line : xmlData) {
+                    sb.append(line);
+                }
+                _contacts = JsonXMLParseController.MapStringSetFromXML(sb.toString());
+            } else {
+                _contacts = new TreeMap<String, Set<String>>();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public PhoneBookModel(Map<String, Set<String>> bookData) {
-        _contacts = bookData;
-    }
-
+    private String _dataPath = "Data\\Phonebook.xml";
     private Map<String, Set<String>> _contacts;
 
     public Map<String, Set<String>> GetContacts() {
@@ -21,13 +35,19 @@ public class PhoneBookModel {
     }
 
     public void SetContact(String name, String phone) {
-        if (_contacts.containsKey(name)) {
+        if (ContainsName(name)) {
             Set<String> phones = _contacts.get(name);
             phones.add(phone);
         } else {
             Set<String> phones = new LinkedHashSet<String>();
             phones.add(phone);
             _contacts.put(name, phones);
+        }
+        String xmlData = JsonXMLParseController.MapStringSetToXML(_contacts);
+        try {
+            SaveLoadFileController.SaveToFile(_dataPath, xmlData, false);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

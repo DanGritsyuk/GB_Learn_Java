@@ -4,14 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import Interface.ConsoleManager;
 
-public class JsonParseController {
+public class JsonXMLParseController {
     public static Map<String, String> JsonToMap(String strJson) {
         Map<String, String> map = new HashMap<>();
         Matcher matcher = PatternMatcher(strJson, "\"(.*?)\":\"(.*?)\"");
@@ -78,5 +80,45 @@ public class JsonParseController {
     private static void DrawLineFromFile(ConsoleManager cm, int charCount, String strLine) {
         cm.PrintText("\033[F", " ".repeat(charCount));
         cm.PrintText("\b".repeat(charCount), strLine + "\n\n");
+    }
+
+    public static String MapStringSetToXML(Map<String, Set<String>> map) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<map>");
+        for (Map.Entry<String, Set<String>> entry : map.entrySet()) {
+            sb.append("<entry>");
+            sb.append("<key>").append(entry.getKey()).append("</key>");
+            sb.append("<values>");
+            for (String value : entry.getValue()) {
+                sb.append("<value>").append(value).append("</value>");
+            }
+            sb.append("</values>");
+            sb.append("</entry>");
+        }
+        sb.append("</map>");
+        return sb.toString();
+    }
+
+    public static Map<String, Set<String>> MapStringSetFromXML(String xml) {
+        Map<String, Set<String>> map = new HashMap<>();
+        int startIndex = xml.indexOf("<entry>");
+        while (startIndex != -1) {
+            int endIndex = xml.indexOf("</entry>", startIndex);
+            String entryXml = xml.substring(startIndex, endIndex + 8);
+            int keyStartIndex = entryXml.indexOf("<key>") + 5;
+            int keyEndIndex = entryXml.indexOf("</key>");
+            String key = entryXml.substring(keyStartIndex, keyEndIndex);
+            Set<String> values = new HashSet<>();
+            int valueStartIndex = entryXml.indexOf("<value>");
+            while (valueStartIndex != -1) {
+                int valueEndIndex = entryXml.indexOf("</value>", valueStartIndex);
+                String value = entryXml.substring(valueStartIndex + 7, valueEndIndex);
+                values.add(value);
+                valueStartIndex = entryXml.indexOf("<value>", valueEndIndex);
+            }
+            map.put(key, values);
+            startIndex = xml.indexOf("<entry>", endIndex);
+        }
+        return map;
     }
 }
