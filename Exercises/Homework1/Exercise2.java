@@ -19,7 +19,7 @@ public class Exercise2 extends Exercise {
                 }
             }
             if (isPrime) {
-                _cm.PrintText(Integer.toString(i), " ");
+                cmdManager.PrintText(Integer.toString(i), " ");
             }
         }
 

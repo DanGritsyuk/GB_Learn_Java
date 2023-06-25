@@ -18,7 +18,7 @@ public class Exercise3 extends Exercise {
     public boolean Solution() {
         GetDataFromConsole();
         GetResoultToString();
-        _cm.PrintText(this.strResult);
+        cmdManager.PrintText(this.strResult);
 
         return false;
     }
@@ -57,8 +57,8 @@ public class Exercise3 extends Exercise {
     }
 
     private void GetDataFromConsole() {
-        _num1 = Double.parseDouble(_cm.InputText("Введите первое число: "));
-        _operator = _cm.InputText("Введите оператор (+, -, *, /): ").charAt(0);
-        _num2 = Double.parseDouble(_cm.InputText("Введите второе число: "));
+        _num1 = Double.parseDouble(cmdManager.InputText("Введите первое число: "));
+        _operator = cmdManager.InputText("Введите оператор (+, -, *, /): ").charAt(0);
+        _num2 = Double.parseDouble(cmdManager.InputText("Введите второе число: "));
     }
 }

@@ -15,7 +15,7 @@ public class Exercise9 extends Exercise {
     public boolean Solution() {
         FillArrayList();
 
-        _cm.PrintText("Исходный список: " + _numbers, "\n\n");
+        cmdManager.PrintText("Исходный список: " + _numbers, "\n\n");
 
         _numbers.removeIf(n -> n % 2 == 0);
         int min = _numbers.stream().min(Integer::compare).orElse(0);
@@ -23,10 +23,10 @@ public class Exercise9 extends Exercise {
 
         double average = _numbers.stream().mapToInt(Integer::intValue).average().orElse(0.0);
 
-        _cm.PrintText("Список без чётных чисел: " + _numbers);
-        _cm.PrintText("Минимальное значение: " + min);
-        _cm.PrintText("Максимальное значение: " + max);
-        _cm.PrintText("Среднее значение: " + average);
+        cmdManager.PrintText("Список без чётных чисел: " + _numbers);
+        cmdManager.PrintText("Минимальное значение: " + min);
+        cmdManager.PrintText("Максимальное значение: " + max);
+        cmdManager.PrintText("Среднее значение: " + average);
         return false;
     }
 

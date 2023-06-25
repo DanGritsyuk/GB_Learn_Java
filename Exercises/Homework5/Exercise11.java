@@ -16,7 +16,7 @@ public class Exercise11 extends Exercise {
         super(description);
 
         var phoneBook = new PhoneBookModel();
-        this._pbController = new PhoneBookController(phoneBook, new PhoneBookView(_cm));
+        this._pbController = new PhoneBookController(phoneBook, new PhoneBookView(cmdManager));
 
         _startMenu.put("ГЛАВНОЕ МЕНЮ", Arrays.asList("Добавить номер", "Найти контакт", "Просмотреть весь список"));
         _startMenu.put("---------", Arrays.asList("ВЫХОД"));
@@ -49,7 +49,7 @@ public class Exercise11 extends Exercise {
                     break;
 
                 default:
-                    _cm.PrintText("Неизвестная команда");
+                    cmdManager.PrintText("Неизвестная команда");
                     break;
             }
         }

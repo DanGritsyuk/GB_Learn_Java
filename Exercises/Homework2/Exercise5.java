@@ -13,7 +13,7 @@ public class Exercise5 extends Exercise {
     @Override
     public boolean Solution() {
         var message = "Введите строку параметров или путь до файла, где она хранится:";
-        Map<String, String> map = JsonXMLParseController.ReadJsonToMap(_cm, message);
+        Map<String, String> map = JsonXMLParseController.ReadJsonToMap(cmdManager, message);
 
         StringBuilder whereClause = new StringBuilder();
         boolean firstParam = true;
@@ -31,7 +31,7 @@ public class Exercise5 extends Exercise {
         }
 
         String sqlQuery = "select * from students" + whereClause.toString();
-        _cm.PrintText(sqlQuery);
+        cmdManager.PrintText(sqlQuery);
         return false;
     }
 }

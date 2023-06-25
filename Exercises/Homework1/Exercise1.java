@@ -11,7 +11,7 @@ public class Exercise1 extends Exercise {
     @Override
     public boolean Solution() {
         String strN = "";
-        strN = _cm.InputText("Введите число N: ");
+        strN = super.cmdManager.InputText("Введите число N: ");
 
         int n = Integer.parseInt(strN);
         int sumN = n * (n + 1) / 2;
@@ -19,7 +19,7 @@ public class Exercise1 extends Exercise {
 
         String answer = "\n" + strN + "-ое треугольного число: " + Integer.toString(sumN);
         answer += ". Факториал: " + Integer.toString(factN);
-        _cm.PrintText(answer);
+        super.cmdManager.PrintText(answer);
 
         return false;
     }

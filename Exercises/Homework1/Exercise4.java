@@ -9,7 +9,7 @@ public class Exercise4 extends Exercise {
 
     @Override
     public boolean Solution() {
-        String equation = _cm.InputText("Введите уравнение: ").replace(" ", "");
+        String equation = cmdManager.InputText("Введите уравнение: ").replace(" ", "");
 
         for (int i = 0; i < 10; i++) {
             String buffEquation = equation.replace("?", Integer.toString(i));
@@ -21,12 +21,12 @@ public class Exercise4 extends Exercise {
                 isTrueEquality = false;
             }
             if (isTrueEquality) {
-                _cm.PrintText(buffEquation);
+                cmdManager.PrintText(buffEquation);
                 return false;
             }
         }
 
-        _cm.PrintText("Решения нет!");
+        cmdManager.PrintText("Решения нет!");
         return false;
     }
 

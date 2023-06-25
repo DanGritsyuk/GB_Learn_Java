@@ -16,14 +16,14 @@ public class Exercise10 extends Exercise {
         Deque<Object> deque1 = new LinkedList<>(Arrays.asList(3, 2, 1, '-'));
         Deque<Object> deque2 = new LinkedList<>(Arrays.asList(5, 4, 3));
 
-        _cm.PrintText("Первый: " + deque1);
-        _cm.PrintText("Второй: " + deque2);
+        cmdManager.PrintText("Первый: " + deque1);
+        cmdManager.PrintText("Второй: " + deque2);
 
         Deque<Object> product = MultiplyDeque(deque1, deque2);
-        _cm.PrintText("Произведение: " + product);
+        cmdManager.PrintText("Произведение: " + product);
 
         Deque<Object> sum = SumDeque(deque1, deque2);
-        _cm.PrintText("Сумма: " + sum);
+        cmdManager.PrintText("Сумма: " + sum);
 
         return false;
     }

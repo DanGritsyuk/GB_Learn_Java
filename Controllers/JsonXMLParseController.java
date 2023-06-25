@@ -58,30 +58,6 @@ public class JsonXMLParseController {
         return jsonDataArray;
     }
 
-    private static Matcher PatternMatcher(String input, String regex) {
-        Pattern pattern = Pattern.compile(regex);
-        return pattern.matcher(input);
-    }
-
-    private static Boolean IsFilePath(String filePath) {
-        File file = new File(filePath);
-        return file.isFile();
-    }
-
-    private static String GetFromFile(String filePath) {
-        try {
-            return SaveLoadFileController.LoadFromFile(filePath)[0];
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
-
-    private static void DrawLineFromFile(ConsoleManager cm, int charCount, String strLine) {
-        cm.PrintText("\033[F", " ".repeat(charCount));
-        cm.PrintText("\b".repeat(charCount), strLine + "\n\n");
-    }
-
     public static String MapStringSetToXML(Map<String, Set<String>> map) {
         StringBuilder sb = new StringBuilder();
         sb.append("<map>");
@@ -121,4 +97,29 @@ public class JsonXMLParseController {
         }
         return map;
     }
+
+    private static Matcher PatternMatcher(String input, String regex) {
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(input);
+    }
+
+    private static Boolean IsFilePath(String filePath) {
+        File file = new File(filePath);
+        return file.isFile();
+    }
+
+    private static String GetFromFile(String filePath) {
+        try {
+            return SaveLoadFileController.LoadFromFile(filePath)[0];
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    private static void DrawLineFromFile(ConsoleManager cm, int charCount, String strLine) {
+        cm.PrintText("\033[F", " ".repeat(charCount));
+        cm.PrintText("\b".repeat(charCount), strLine + "\n\n");
+    }
+
 }

@@ -15,7 +15,7 @@ public abstract class Exercise {
 
     private String _description;
     private String _borderLine = "==========================================";
-    protected ConsoleManager _cm = new ConsoleManager();
+    protected ConsoleManager cmdManager = new ConsoleManager();
 
     public String GetDescription() {
         return _description;
@@ -41,7 +41,7 @@ public abstract class Exercise {
     }
 
     public boolean End() {
-        _cm.PrintText("\n");
+        cmdManager.PrintText("\n");
         Map<String, List<String>> menuData = new HashMap<String, List<String>>();
         menuData.put("Выберите следующий шаг:", Arrays.asList("Выход в главное меню.", "Начать заново."));
         var menu = new MenuRender(menuData, 0, true, false, "", "", "", "");
@@ -52,11 +52,11 @@ public abstract class Exercise {
     }
 
     private void DrawHeader() {
-        _cm.ConsoleClear();
-        _cm.PrintText(this._description + "\n" + this._borderLine + "\n");
+        cmdManager.ConsoleClear();
+        cmdManager.PrintText(this._description + "\n" + this._borderLine + "\n");
     }
 
     private void DrawFooter() {
-        _cm.PrintText("\n\n" + this._borderLine);
+        cmdManager.PrintText("\n\n" + this._borderLine);
     }
 }
