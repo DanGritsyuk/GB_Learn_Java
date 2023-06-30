@@ -16,6 +16,26 @@ import Exercises.FinalProject.Structs.TypeRAM;
 import Exercises.FinalProject.Structs.TypeROM;
 
 public class Catalog {
+
+    private final String NAME_CORSAR = "CORSAR";
+    private final String NAME_NVIDIA = "NVIDIA";
+    private final String NAME_AMD = "AMD";
+    private final String NAME_INTEL = "INTEL";
+
+    private final String NAME_ASUS = "ASUS";
+    private final String NAME_LENOVO = "LENOVO";
+
+    private final String OS_WINDOWS10 = "WINDOWS 10";
+    private final String OS_WINDOWS11 = "WINDOWS 11";
+    private final String OS_LINUX = "LINUX";
+
+    private final RandomAccessMemory[] MEMORIES;
+    private final ReadOnlyMemory[] DISKS;
+    private final GraphicProcessor[] GPUSES;
+    private final CentralProcessor[] CPUSES;
+
+    private Notebook[] _notebooks;
+
     public Catalog() {
 
         this.MEMORIES = new RandomAccessMemory[4];
@@ -51,25 +71,6 @@ public class Catalog {
         CPUSES[4] = new CentralProcessor(NAME_AMD, "Rizen 5", 3.6, 2,
                 new GraphicProcessor(NAME_AMD, "Vega", null, 1100));
     }
-
-    private final String NAME_CORSAR = "CORSAR";
-    private final String NAME_NVIDIA = "NVIDIA";
-    private final String NAME_AMD = "AMD";
-    private final String NAME_INTEL = "INTEL";
-
-    private final String NAME_ASUS = "ASUS";
-    private final String NAME_LENOVO = "LENOVO";
-
-    private final String OS_WINDOWS10 = "WINDOWS 10";
-    private final String OS_WINDOWS11 = "WINDOWS 11";
-    private final String OS_LINUX = "LINUX";
-
-    private final RandomAccessMemory[] MEMORIES;
-    private final ReadOnlyMemory[] DISKS;
-    private final GraphicProcessor[] GPUSES;
-    private final CentralProcessor[] CPUSES;
-
-    private Notebook[] _notebooks;
 
     public String[] GetOperatingSystem() {
         return new String[] { OS_WINDOWS10, OS_WINDOWS11, OS_LINUX };
