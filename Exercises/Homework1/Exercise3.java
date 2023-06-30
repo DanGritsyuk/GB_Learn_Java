@@ -8,7 +8,7 @@ public class Exercise3 extends Exercise {
         super(description);
     }
 
-    protected String strResult = "";
+    public String strResult = "";
 
     private Double _num1 = (double) 0;
     private Double _num2 = (double) 0;

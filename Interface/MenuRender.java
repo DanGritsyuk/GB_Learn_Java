@@ -11,26 +11,6 @@ import java.util.LinkedHashMap;
 
 public class MenuRender {
 
-    public String headerText;
-    public String footerText;
-
-    private Map<String, List<String>> _menuData;
-    private int _consoleLines;
-    private int _largestLine;
-    private int _helpTextLines = 0;
-    private boolean _isEscActive;
-    private boolean _showHelpControl;
-    private String _prefix;
-    private String _prefixMark;
-    private ConsoleManager _cm = new ConsoleManager();
-    private Set<PageData> _pagesMap;
-    private final int HEADER_LINE_COUNT = 2;
-    private final int LINE_MAX_CHARACTER_COUNT = 190;
-
-    public MenuRender(Map<String, List<String>> menuData) {
-        this(menuData, 30, true, true, "", "", "", "");
-    }
-
     public MenuRender(Map<String, List<String>> menuData, int consoleLines,
             boolean isEscActive, boolean showHelpControl, String headerText, String footerText, String prefix,
             String prefixMark) {
@@ -46,6 +26,22 @@ public class MenuRender {
         this._largestLine = GetLargestLineLength();
         this._pagesMap = SplitDataToPages(_menuData, _consoleLines, HEADER_LINE_COUNT);
     }
+
+    public String headerText;
+    public String footerText;
+
+    private Map<String, List<String>> _menuData;
+    private int _consoleLines;
+    private int _largestLine;
+    private int _helpTextLines = 0;
+    private boolean _isEscActive;
+    private boolean _showHelpControl;
+    private String _prefix;
+    private String _prefixMark;
+    private ConsoleManager _cm = new ConsoleManager();
+    private Set<PageData> _pagesMap;
+    private final int HEADER_LINE_COUNT = 2;
+    private final int LINE_MAX_CHARACTER_COUNT = 190;
 
     public int StartRenderMenu(int index) {
         int largestKey = GetLargestKeyTasks();

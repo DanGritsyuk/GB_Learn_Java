@@ -10,15 +10,13 @@ import Exercises.FinalProject.NotebookComponents.CentralProcessor;
 import Exercises.FinalProject.NotebookComponents.GraphicProcessor;
 import Exercises.FinalProject.NotebookComponents.RandomAccessMemory;
 import Exercises.FinalProject.NotebookComponents.ReadOnlyMemory;
-import Exercises.FinalProject.Structs.Brand;
-import Exercises.FinalProject.Structs.OperatingSystem;
 import Exercises.FinalProject.Structs.TypeRAM;
 import Exercises.FinalProject.Structs.TypeROM;
 
 public class Notebook {
-    public Notebook(Brand brand,
+    public Notebook(String brand,
             String name,
-            OperatingSystem os,
+            String os,
             int inStock,
             BigDecimal price,
             CentralProcessor cpu,
@@ -38,9 +36,9 @@ public class Notebook {
         this._rom = rom;
     }
 
-    private Brand _brand;
+    private String _brand;
     private String _name;
-    private OperatingSystem _os;
+    private String _os;
     private int _inStock;
     private BigDecimal _price;
     private CentralProcessor _cpu;
@@ -82,7 +80,7 @@ public class Notebook {
         return _rom[0].GetType();
     }
 
-    public OperatingSystem GetOs() {
+    public String GetOs() {
         return _os;
     }
 

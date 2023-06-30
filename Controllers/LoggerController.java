@@ -14,6 +14,10 @@ import java.util.logging.XMLFormatter;
 
 public class LoggerController {
 
+    private String _logDirectory;
+    private String _extension;
+    private Logger _logger;
+
     public LoggerController(String loggerName, Boolean isXMLFormat) {
         try {
             this._logDirectory = "Logs\\" + loggerName;
@@ -33,10 +37,6 @@ public class LoggerController {
             e.printStackTrace();
         }
     }
-
-    private String _logDirectory;
-    private String _extension;
-    private Logger _logger;
 
     public void Log(String message) {
         _logger.info(message);

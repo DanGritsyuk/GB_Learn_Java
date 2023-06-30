@@ -1,9 +1,7 @@
 package Exercises.FinalProject.NotebookComponents;
 
-import Exercises.FinalProject.Structs.Brand;
-
 public class CentralProcessor {
-    public CentralProcessor(Brand brand, String name, Double clockRate, int cores,
+    public CentralProcessor(String brand, String name, Double clockRate, int cores,
             GraphicProcessor gpu) {
         this._brand = brand;
         this._name = name;
@@ -12,7 +10,7 @@ public class CentralProcessor {
         this._gpu = gpu;
     }
 
-    private Brand _brand;
+    private String _brand;
     private String _name;
     private Double _clockRate;
     private int _cores;

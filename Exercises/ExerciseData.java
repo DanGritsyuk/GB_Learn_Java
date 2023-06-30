@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ExerciseData {
-    public Map<String, List<String>> descriptions;
-    private int linesCount;
-
     public ExerciseData() {
         descriptions = new LinkedHashMap<>();
         descriptions.put("ДОМАШНЯЯ РАБОТА 1", Arrays.asList(
@@ -33,6 +30,9 @@ public class ExerciseData {
         linesCount = _TasksCount();
     }
 
+    public Map<String, List<String>> descriptions;
+    private int linesCount;
+
     public String GetTaskText(int index) {
         int count = 0;
         for (String keyWork : descriptions.keySet()) {
@@ -46,15 +46,15 @@ public class ExerciseData {
         return null;
     }
 
-    public int getLinesCount() {
-        return linesCount;
-    }
-
     private int _TasksCount() {
         int count = 0;
         for (List<String> tasks : descriptions.values()) {
             count += tasks.size();
         }
         return count;
+    }
+
+    public int getLinesCount() {
+        return linesCount;
     }
 }
