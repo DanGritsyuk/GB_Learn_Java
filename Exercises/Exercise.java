@@ -51,7 +51,7 @@ public abstract class Exercise {
         return answer == 0 || answer == 1;
     }
 
-    private void DrawHeader() {
+    protected void DrawHeader() {
         cmdManager.ConsoleClear();
         cmdManager.PrintText(this._description + "\n" + this._borderLine + "\n");
     }

@@ -11,7 +11,7 @@ import Exercises.Homework2.Exercise8;
 import Exercises.Homework3.Exercise9;
 import Exercises.Homework4.Exercise10;
 import Exercises.Homework5.Exercise11;
-import Exercises.FinalProject.ExerciseEnd;
+import Exercises.FinalProject.Exercise12;
 
 public class ExerciseBuilder {
     public static Exercise GetExerciseObject(ExerciseData exerciseData, int taskNum) throws Exception {
@@ -41,7 +41,7 @@ public class ExerciseBuilder {
             case 11:
                 return new Exercise11(taskText);
             case 12:
-                return new ExerciseEnd(taskText);
+                return new Exercise12(taskText);
             default:
                 String nameTask = taskText.length() < 51 ? taskText : taskText.substring(0, 47) + "...";
                 throw new Exception("ЗАДАЧА <" + nameTask + "> ЕЩЕ НЕ РЕАЛИЗОВАНА");

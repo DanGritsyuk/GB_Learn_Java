@@ -18,11 +18,12 @@ import Exercises.FinalProject.Structs.TypeROM;
 public class Catalog {
     public Catalog() {
 
-        this.MEMORIES = new RandomAccessMemory[3];
+        this.MEMORIES = new RandomAccessMemory[4];
 
         MEMORIES[0] = new RandomAccessMemory(NAME_CORSAR, "Vengeance", 4, TypeRAM.DDR3);
         MEMORIES[1] = new RandomAccessMemory(NAME_CORSAR, "Vengeance LPX", 8, TypeRAM.DDR4);
         MEMORIES[2] = new RandomAccessMemory(NAME_CORSAR, "Vengeance LPX", 16, TypeRAM.DDR4);
+        MEMORIES[3] = new RandomAccessMemory(NAME_CORSAR, "SuperSpeed", 2, TypeRAM.DDR2);
 
         this.DISKS = new ReadOnlyMemory[2];
 
@@ -54,14 +55,14 @@ public class Catalog {
     private final String NAME_CORSAR = "CORSAR";
     private final String NAME_NVIDIA = "NVIDIA";
     private final String NAME_AMD = "AMD";
-    private final String NAME_INTEL = "Intel";
+    private final String NAME_INTEL = "INTEL";
 
     private final String NAME_ASUS = "ASUS";
-    private final String NAME_LENOVO = "Lenovo";
+    private final String NAME_LENOVO = "LENOVO";
 
-    private final String OS_WINDOWS10 = "Windows 10";
-    private final String OS_WINDOWS11 = "Windows 11";
-    private final String OS_LINUX = "Linux";
+    private final String OS_WINDOWS10 = "WINDOWS 10";
+    private final String OS_WINDOWS11 = "WINDOWS 11";
+    private final String OS_LINUX = "LINUX";
 
     private final RandomAccessMemory[] MEMORIES;
     private final ReadOnlyMemory[] DISKS;
@@ -75,7 +76,7 @@ public class Catalog {
     }
 
     public Catalog SetNotebooks() {
-        _notebooks = new Notebook[3];
+        _notebooks = new Notebook[4];
 
         _notebooks[0] = new Notebook(NAME_ASUS, "Vivobook", OS_WINDOWS10, 10, BigDecimal.valueOf(33990),
                 CPUSES[0], null,
@@ -89,6 +90,10 @@ public class Catalog {
                 CPUSES[4], GPUSES[1],
                 new RandomAccessMemory[] { MEMORIES[1], MEMORIES[1], null, null },
                 new ReadOnlyMemory[] { DISKS[1], null });
+        _notebooks[3] = new Notebook(NAME_LENOVO, "OldSchool", OS_LINUX, 5, BigDecimal.valueOf(15990),
+                CPUSES[0], null,
+                new RandomAccessMemory[] { MEMORIES[3], null },
+                new ReadOnlyMemory[] { DISKS[0] });
 
         return this;
     }
@@ -125,7 +130,11 @@ public class Catalog {
                         }
                         break;
                     case "os":
-                        if (!notebook.GetOs().equals(entry.getValue())) {
+                        if (!notebook.GetOs().contains(entry.getValue().toString())) {
+                            isMatched = false;
+                        }
+                    case "brand":
+                        if (!notebook.GetOs().contains(entry.getValue().toString())) {
                             isMatched = false;
                         }
                         break;
