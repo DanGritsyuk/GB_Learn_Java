@@ -1,16 +1,17 @@
 package Exercises.FinalProject.NotebookComponents;
 
+import Exercises.FinalProject.Structs.Brand;
 import Exercises.FinalProject.Structs.TypeRAM;
 
 public class RandomAccessMemory {
-    public RandomAccessMemory(String brand, String name, int size, TypeRAM type) {
+    public RandomAccessMemory(Brand brand, String name, int size, TypeRAM type) {
         this._brand = brand;
         this._name = name;
         this._size = size;
         this._typeRAM = type;
     }
 
-    private String _brand;
+    private Brand _brand;
     private String _name;
     private int _size;
     private TypeRAM _typeRAM;

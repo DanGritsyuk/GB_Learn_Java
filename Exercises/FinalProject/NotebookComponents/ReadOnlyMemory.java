@@ -1,16 +1,17 @@
 package Exercises.FinalProject.NotebookComponents;
 
+import Exercises.FinalProject.Structs.Brand;
 import Exercises.FinalProject.Structs.TypeROM;
 
 public class ReadOnlyMemory {
-    public ReadOnlyMemory(String brand, String name, int size, TypeROM type) {
+    public ReadOnlyMemory(Brand brand, String name, int size, TypeROM type) {
         this._brand = brand;
         this._name = name;
         this._size = size;
         this._typeROM = type;
     }
 
-    private String _brand;
+    private Brand _brand;
     private String _name;
     private int _size;
     private TypeROM _typeROM;

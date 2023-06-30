@@ -11,22 +11,6 @@ import java.util.LinkedHashMap;
 
 public class MenuRender {
 
-    public MenuRender(Map<String, List<String>> menuData, int consoleLines,
-            boolean isEscActive, boolean showHelpControl, String headerText, String footerText, String prefix,
-            String prefixMark) {
-        this.headerText = headerText == null ? "" : headerText;
-        this.footerText = footerText == null ? "" : footerText;
-
-        this._menuData = menuData;
-        this._consoleLines = consoleLines;
-        this._isEscActive = isEscActive;
-        this._showHelpControl = showHelpControl;
-        this._prefix = prefix == null || prefix.isEmpty() ? "> " : prefix;
-        this._prefixMark = prefixMark == null ? "" : prefixMark;
-        this._largestLine = GetLargestLineLength();
-        this._pagesMap = SplitDataToPages(_menuData, _consoleLines, HEADER_LINE_COUNT);
-    }
-
     public String headerText;
     public String footerText;
 
@@ -42,6 +26,26 @@ public class MenuRender {
     private Set<PageData> _pagesMap;
     private final int HEADER_LINE_COUNT = 2;
     private final int LINE_MAX_CHARACTER_COUNT = 190;
+
+    public MenuRender(Map<String, List<String>> menuData) {
+        this(menuData, 30, true, true, "", "", "", "");
+    }
+
+    public MenuRender(Map<String, List<String>> menuData, int consoleLines,
+            boolean isEscActive, boolean showHelpControl, String headerText, String footerText, String prefix,
+            String prefixMark) {
+        this.headerText = headerText == null ? "" : headerText;
+        this.footerText = footerText == null ? "" : footerText;
+
+        this._menuData = menuData;
+        this._consoleLines = consoleLines;
+        this._isEscActive = isEscActive;
+        this._showHelpControl = showHelpControl;
+        this._prefix = prefix == null || prefix.isEmpty() ? "> " : prefix;
+        this._prefixMark = prefixMark == null ? "" : prefixMark;
+        this._largestLine = GetLargestLineLength();
+        this._pagesMap = SplitDataToPages(_menuData, _consoleLines, HEADER_LINE_COUNT);
+    }
 
     public int StartRenderMenu(int index) {
         int largestKey = GetLargestKeyTasks();

@@ -1,16 +1,17 @@
 package Exercises.FinalProject.NotebookComponents;
 
+import Exercises.FinalProject.Structs.Brand;
 import Exercises.FinalProject.Structs.TypeRAM;
 
 public class GraphicProcessor {
-    public GraphicProcessor(String brand, String name, TypeRAM typeRAM, int clockRate) {
+    public GraphicProcessor(Brand brand, String name, TypeRAM typeRAM, int clockRate) {
         this._brand = brand;
         this._name = name;
         this._typeRAM = typeRAM;
         this._clockRate = clockRate;
     }
 
-    private String _brand;
+    private Brand _brand;
     private String _name;
     private TypeRAM _typeRAM;
     private int _clockRate;
