@@ -31,10 +31,10 @@ public abstract class Exercise {
                 done = Solution();
             } catch (Exception ex) {
                 DrawHeader();
-                System.out.println(ex);
+                cmdManager.PrintText(ex.getMessage());
             }
             DrawFooter();
-            if (done == false) {
+            if (!done) {
                 done = End();
             }
         }
@@ -46,7 +46,7 @@ public abstract class Exercise {
         menuData.put("Выберите следующий шаг:", Arrays.asList("Выход в главное меню.", "Начать заново."));
         var menu = new MenuRender(menuData, 0, true, false, "", "", "", "");
 
-        int answer = menu.StartRenderMenu(0);
+        int answer = menu.startRenderMenu(0);
 
         return answer == 0 || answer == 1;
     }

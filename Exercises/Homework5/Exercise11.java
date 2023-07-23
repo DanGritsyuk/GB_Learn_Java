@@ -32,7 +32,7 @@ public class Exercise11 extends Exercise {
     public boolean Solution() {
         var phoneBookIsOpen = true;
         while (phoneBookIsOpen) {
-            _taskId = _mr.StartRenderMenu(_taskId - 1);
+            _taskId = _mr.startRenderMenu(_taskId - 1);
             switch (_taskId) {
                 case 0, 4:
                     phoneBookIsOpen = false;

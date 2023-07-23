@@ -62,6 +62,6 @@ public class PhoneBookView {
     private static int StartRender(Map<String, List<String>> menuData, int consoleLines, Boolean showHelpMenu,
             String prefix) {
         MenuRender mr = new MenuRender(menuData, consoleLines, true, showHelpMenu, null, null, prefix, "");
-        return mr.StartRenderMenu(0);
+        return mr.startRenderMenu(0);
     }
 }

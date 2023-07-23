@@ -18,7 +18,7 @@ public class Program {
         boolean startApp = true;
         while (startApp) {
             cm.ConsoleClear();
-            taskId = menu.StartRenderMenu(taskId - 1);
+            taskId = menu.startRenderMenu(taskId - 1);
             menu.footerText = "";
             try {
                 Exercise exercise = ExerciseBuilder.GetExerciseObject(exData, taskId);
