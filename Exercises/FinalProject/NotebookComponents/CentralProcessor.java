@@ -1,6 +1,12 @@
 package Exercises.FinalProject.NotebookComponents;
 
 public class CentralProcessor {
+    private String _brand;
+    private String _name;
+    private Double _clockRate;
+    private int _cores;
+    private GraphicProcessor _gpu;
+
     public CentralProcessor(String brand, String name, Double clockRate, int cores,
             GraphicProcessor gpu) {
         this._brand = brand;
@@ -10,13 +16,7 @@ public class CentralProcessor {
         this._gpu = gpu;
     }
 
-    private String _brand;
-    private String _name;
-    private Double _clockRate;
-    private int _cores;
-    private GraphicProcessor _gpu;
-
-    public GraphicProcessor GetIntegratedGPU() {
+    public GraphicProcessor getIntegratedGPU() {
         return _gpu;
     }
 

@@ -14,6 +14,18 @@ import Exercises.FinalProject.Structs.TypeRAM;
 import Exercises.FinalProject.Structs.TypeROM;
 
 public class Notebook {
+    private String _brand;
+    private String _name;
+    private String _os;
+    private int _inStock;
+    private BigDecimal _price;
+    private CentralProcessor _cpu;
+    private GraphicProcessor _gpu;
+    private RandomAccessMemory[] _ram;
+    private ReadOnlyMemory[] _rom;
+
+    private Boolean _gpuIsDiscrete;
+
     public Notebook(String brand,
             String name,
             String os,
@@ -35,18 +47,6 @@ public class Notebook {
         this._ram = ram;
         this._rom = rom;
     }
-
-    private String _brand;
-    private String _name;
-    private String _os;
-    private int _inStock;
-    private BigDecimal _price;
-    private CentralProcessor _cpu;
-    private GraphicProcessor _gpu;
-    private RandomAccessMemory[] _ram;
-    private ReadOnlyMemory[] _rom;
-
-    private Boolean _gpuIsDiscrete;
 
     public int GetSataCount() {
         return _rom.length;
@@ -73,11 +73,11 @@ public class Notebook {
     }
 
     public TypeRAM GetRamType() {
-        return _ram[0].GetType();
+        return _ram[0].getType();
     }
 
     public TypeROM GetRomType() {
-        return _rom[0].GetType();
+        return _rom[0].getType();
     }
 
     public String GetOs() {
@@ -99,7 +99,7 @@ public class Notebook {
 
     private void SetGPU(CentralProcessor cpu, GraphicProcessor gpu) {
         if (gpu == null) {
-            this._gpu = cpu.GetIntegratedGPU();
+            this._gpu = cpu.getIntegratedGPU();
             this._gpuIsDiscrete = false;
         } else {
             this._gpu = gpu;

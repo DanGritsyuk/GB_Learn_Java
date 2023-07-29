@@ -24,9 +24,9 @@ public class LoggerController {
             _extension = isXMLFormat ? ".xml" : ".log";
             _logger = Logger.getLogger(loggerName);
             _logger.setLevel(Level.INFO);
-            CreateLogFile();
+            createLogFile();
 
-            FileHandler fileHandler = new FileHandler(GetLogFilePath(), true);
+            FileHandler fileHandler = new FileHandler(getLogFilePath(), true);
             if (isXMLFormat) {
                 fileHandler.setFormatter(new XMLFormatter());
             } else {
@@ -38,7 +38,7 @@ public class LoggerController {
         }
     }
 
-    public void Log(String message) {
+    public void log(String message) {
         _logger.info(message);
     }
 
@@ -46,26 +46,26 @@ public class LoggerController {
         _logger.log(Level.parse(level), message);
     }
 
-    public void Dispose() {
+    public void dispose() {
         var fileHandler = _logger.getHandlers()[0];
         fileHandler.close();
         _logger.removeHandler(fileHandler);
         _logger = null;
     }
 
-    private void CreateLogFile() throws IOException {
+    private void createLogFile() throws IOException {
         Path logPath = Paths.get(_logDirectory);
         if (!Files.exists(logPath)) {
             Files.createDirectories(logPath);
         }
-        String logFilePath = GetLogFilePath();
+        String logFilePath = getLogFilePath();
         Path path = Paths.get(logFilePath);
         if (!Files.exists(path)) {
             Files.createFile(path);
         }
     }
 
-    private String GetLogFilePath() {
+    private String getLogFilePath() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String currentDate = dateFormat.format(new Date());
         return _logDirectory + "\\" + currentDate + _extension;

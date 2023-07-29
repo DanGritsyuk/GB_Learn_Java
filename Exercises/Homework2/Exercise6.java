@@ -12,11 +12,11 @@ public class Exercise6 extends Exercise {
     }
 
     @Override
-    public boolean Solution() {
+    public boolean solution() {
         var array = new int[10];
-        RandomController.FillArray(array, 0, 10);
+        RandomController.fillArray(array, 0, 10);
         LoggerController logger = new LoggerController(Exercise6.class.getName(), false);
-        logger.Log("Исходный массив: " + Arrays.toString(array));
+        logger.log("Исходный массив: " + Arrays.toString(array));
         int n = array.length;
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n - i - 1; j++) {
@@ -26,10 +26,10 @@ public class Exercise6 extends Exercise {
                     array[j + 1] = temp;
                 }
             }
-            logger.Log("Итерация " + (i + 1) + ": " + Arrays.toString(array));
+            logger.log("Итерация " + (i + 1) + ": " + Arrays.toString(array));
         }
-        logger.Log("Результат: " + Arrays.toString(array));
-        logger.Dispose();
+        logger.log("Результат: " + Arrays.toString(array));
+        logger.dispose();
         return false;
     }
 }

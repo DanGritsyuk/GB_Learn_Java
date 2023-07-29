@@ -9,22 +9,22 @@ public class Exercise1 extends Exercise {
     }
 
     @Override
-    public boolean Solution() {
+    public boolean solution() {
         String strN = "";
-        strN = super.cmdManager.InputText("Введите число N: ");
+        strN = super.cmdManager.inputText("Введите число N: ");
 
         int n = Integer.parseInt(strN);
         int sumN = n * (n + 1) / 2;
-        int factN = Factorial(n);
+        int factN = factorial(n);
 
         String answer = "\n" + strN + "-ое треугольного число: " + Integer.toString(sumN);
         answer += ". Факториал: " + Integer.toString(factN);
-        super.cmdManager.PrintText(answer);
+        super.cmdManager.printText(answer);
 
         return false;
     }
 
-    private static int Factorial(int n) {
+    private static int factorial(int n) {
         int factNum = 1;
         for (int i = 2; i <= n; i++) {
             factNum *= i;

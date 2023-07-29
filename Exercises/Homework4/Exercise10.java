@@ -12,18 +12,18 @@ public class Exercise10 extends Exercise {
     }
 
     @Override
-    public boolean Solution() {
+    public boolean solution() {
         Deque<Object> deque1 = new LinkedList<>(Arrays.asList(3, 2, 1, '-'));
         Deque<Object> deque2 = new LinkedList<>(Arrays.asList(5, 4, 3));
 
-        cmdManager.PrintText("Первый: " + deque1);
-        cmdManager.PrintText("Второй: " + deque2);
+        cmdManager.printText("Первый: " + deque1);
+        cmdManager.printText("Второй: " + deque2);
 
         Deque<Object> product = MultiplyDeque(deque1, deque2);
-        cmdManager.PrintText("Произведение: " + product);
+        cmdManager.printText("Произведение: " + product);
 
         Deque<Object> sum = SumDeque(deque1, deque2);
-        cmdManager.PrintText("Сумма: " + sum);
+        cmdManager.printText("Сумма: " + sum);
 
         return false;
     }

@@ -9,7 +9,7 @@ public class Exercise2 extends Exercise {
     }
 
     @Override
-    public boolean Solution() {
+    public boolean solution() {
         for (int i = 2; i <= 1000; i++) {
             boolean isPrime = true;
             for (int j = 2; j * j <= i; j++) {
@@ -19,7 +19,7 @@ public class Exercise2 extends Exercise {
                 }
             }
             if (isPrime) {
-                cmdManager.PrintText(Integer.toString(i), " ");
+                cmdManager.printText(Integer.toString(i), " ");
             }
         }
 

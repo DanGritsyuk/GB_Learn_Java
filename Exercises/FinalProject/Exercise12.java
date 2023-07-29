@@ -7,41 +7,41 @@ import Exercises.FinalProject.Structs.TypeRAM;
 import Exercises.FinalProject.Structs.TypeROM;
 
 public class Exercise12 extends Exercise {
-    public Exercise12(String description) {
-        super(description);
-    }
-
     private Catalog _catalog = new Catalog();
     private String _textRAM = "";
     private String _textROM = "";
     private String _os = "";
     private String _brand = "";
 
+    public Exercise12(String description) {
+        super(description);
+    }
+
     @Override
-    public boolean Solution() {
+    public boolean solution() {
         Map<String, Object> filters = new HashMap<>();
 
         var openFilterMenu = true;
         while (openFilterMenu) {
 
-            super.cmdManager.ConsoleClear();
-            super.DrawHeader();
-            super.cmdManager.PrintText("Вбрать критерий: " + _textRAM + " " + _textROM + " " + _os + " " + _brand);
-            super.cmdManager.PrintText("1 - тип RAM");
-            super.cmdManager.PrintText("2 - тип ROM");
-            super.cmdManager.PrintText("3 - Операционная система");
-            super.cmdManager.PrintText("4 - Бренд");
-            super.cmdManager.PrintText();
-            super.cmdManager.PrintText("0 - Найти ноутбуки.");
+            super.cmdManager.consoleClear();
+            super.drawHeader();
+            super.cmdManager.printText("Вбрать критерий: " + _textRAM + " " + _textROM + " " + _os + " " + _brand);
+            super.cmdManager.printText("1 - тип RAM");
+            super.cmdManager.printText("2 - тип ROM");
+            super.cmdManager.printText("3 - Операционная система");
+            super.cmdManager.printText("4 - Бренд");
+            super.cmdManager.printText();
+            super.cmdManager.printText("0 - Найти ноутбуки.");
 
-            int filterCriteria = Integer.parseInt(super.cmdManager.InputText("ВВОД: "));
+            int filterCriteria = Integer.parseInt(super.cmdManager.inputText("ВВОД: "));
 
             switch (filterCriteria) {
                 case 0:
                     openFilterMenu = false;
                     break;
                 case 1:
-                    String bufferRAM = super.cmdManager.InputText("Укажите тип RAM (DDR2, DDR3 и т. д.): ")
+                    String bufferRAM = super.cmdManager.inputText("Укажите тип RAM (DDR2, DDR3 и т. д.): ")
                             .toUpperCase();
                     TypeRAM typeRAM = null;
                     for (var ram : TypeRAM.values()) {
@@ -54,12 +54,12 @@ public class Exercise12 extends Exercise {
                     if (typeRAM != null) {
                         filters.put("ramType", typeRAM);
                     } else {
-                        super.cmdManager.PrintText("Такого критерия нет...");
-                        super.cmdManager.InputText("Нажмите Enter");
+                        super.cmdManager.printText("Такого критерия нет...");
+                        super.cmdManager.inputText("Нажмите Enter");
                     }
                     break;
                 case 2:
-                    String bufferROM = super.cmdManager.InputText("Укажите тип ROM (HDD или SSD): ").toUpperCase();
+                    String bufferROM = super.cmdManager.inputText("Укажите тип ROM (HDD или SSD): ").toUpperCase();
                     TypeROM typeROM = null;
                     for (var rom : TypeROM.values()) {
                         if (rom.toString().equals(bufferROM)) {
@@ -71,28 +71,28 @@ public class Exercise12 extends Exercise {
                     if (typeROM != null) {
                         filters.put("romType", typeROM);
                     } else {
-                        super.cmdManager.PrintText("Такого критерия нет...");
-                        super.cmdManager.InputText("Нажмите Enter");
+                        super.cmdManager.printText("Такого критерия нет...");
+                        super.cmdManager.inputText("Нажмите Enter");
                     }
                     break;
                 case 3:
-                    _os = super.cmdManager.InputText("Укажите О/С: ").toUpperCase();
+                    _os = super.cmdManager.inputText("Укажите О/С: ").toUpperCase();
                     filters.put("os", _os);
                     break;
                 case 4:
-                    _brand = super.cmdManager.InputText("Укажите марку: ").toUpperCase();
+                    _brand = super.cmdManager.inputText("Укажите марку: ").toUpperCase();
                     filters.put("brand", _brand);
                     break;
             }
         }
 
-        var print = _catalog.SetNotebooks().GetNotebooks(filters);
-        super.cmdManager.PrintText();
+        var print = _catalog.setNotebooks().getNotebooks(filters);
+        super.cmdManager.printText();
         if (print.size() == 0) {
-            super.cmdManager.PrintText("По данным критериям ничего не нашлось :(");
+            super.cmdManager.printText("По данным критериям ничего не нашлось :(");
         } else {
             for (String string : print) {
-                super.cmdManager.PrintText(string);
+                super.cmdManager.printText(string);
             }
         }
         return false;

@@ -12,10 +12,10 @@ public class Exercise9 extends Exercise {
     private ArrayList<Integer> _numbers;
 
     @Override
-    public boolean Solution() {
-        FillArrayList();
+    public boolean solution() {
+        fillArrayList();
 
-        cmdManager.PrintText("Исходный список: " + _numbers, "\n\n");
+        cmdManager.printText("Исходный список: " + _numbers, "\n\n");
 
         _numbers.removeIf(n -> n % 2 == 0);
         int min = _numbers.stream().min(Integer::compare).orElse(0);
@@ -23,14 +23,14 @@ public class Exercise9 extends Exercise {
 
         double average = _numbers.stream().mapToInt(Integer::intValue).average().orElse(0.0);
 
-        cmdManager.PrintText("Список без чётных чисел: " + _numbers);
-        cmdManager.PrintText("Минимальное значение: " + min);
-        cmdManager.PrintText("Максимальное значение: " + max);
-        cmdManager.PrintText("Среднее значение: " + average);
+        cmdManager.printText("Список без чётных чисел: " + _numbers);
+        cmdManager.printText("Минимальное значение: " + min);
+        cmdManager.printText("Максимальное значение: " + max);
+        cmdManager.printText("Среднее значение: " + average);
         return false;
     }
 
-    private void FillArrayList() {
+    private void fillArrayList() {
         int size = (int) (Math.random() * 11) + 5;
         _numbers = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {

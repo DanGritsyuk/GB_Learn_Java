@@ -29,7 +29,7 @@ public class Exercise11 extends Exercise {
     private int _taskId = 1;
 
     @Override
-    public boolean Solution() {
+    public boolean solution() {
         var phoneBookIsOpen = true;
         while (phoneBookIsOpen) {
             _taskId = _mr.startRenderMenu(_taskId - 1);
@@ -49,7 +49,7 @@ public class Exercise11 extends Exercise {
                     break;
 
                 default:
-                    cmdManager.PrintText("Неизвестная команда");
+                    cmdManager.printText("Неизвестная команда");
                     break;
             }
         }

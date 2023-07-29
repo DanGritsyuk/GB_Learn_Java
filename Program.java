@@ -1,6 +1,5 @@
 import Exercises.Exercise;
 import Exercises.ExerciseBuilder;
-import Exercises.ExerciseData;
 import Interface.ConsoleManager;
 import Interface.MenuRender;
 
@@ -11,19 +10,19 @@ public class Program {
 
         var cm = new ConsoleManager();
 
-        var exData = new ExerciseData();
-        var menu = new MenuRender(exData.descriptions, CONST_MENU_COUNT, true, true,
+        var exBuilder = new ExerciseBuilder();
+        var menu = new MenuRender(exBuilder.descriptions, CONST_MENU_COUNT, true, true,
                 "", "", "", "");
 
         boolean startApp = true;
         while (startApp) {
-            cm.ConsoleClear();
+            cm.consoleClear();
             taskId = menu.startRenderMenu(taskId - 1);
             menu.footerText = "";
             try {
-                Exercise exercise = ExerciseBuilder.GetExerciseObject(exData, taskId);
+                Exercise exercise = exBuilder.getExerciseObject(taskId);
                 if (exercise != null) {
-                    exercise.Start();
+                    exercise.startup();
                 }
             } catch (Exception e) {
                 menu.footerText = e.getMessage();
@@ -33,7 +32,7 @@ public class Program {
 
         }
 
-        cm.ConsoleClear();
-        cm.PrintText("Программа закрыта.");
+        cm.consoleClear();
+        cm.printText("Программа закрыта.");
     }
 }

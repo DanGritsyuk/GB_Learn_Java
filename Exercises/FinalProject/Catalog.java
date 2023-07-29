@@ -72,11 +72,7 @@ public class Catalog {
                 new GraphicProcessor(NAME_AMD, "Vega", null, 1100));
     }
 
-    public String[] GetOperatingSystem() {
-        return new String[] { OS_WINDOWS10, OS_WINDOWS11, OS_LINUX };
-    }
-
-    public Catalog SetNotebooks() {
+    public Catalog setNotebooks() {
         _notebooks = new Notebook[4];
 
         _notebooks[0] = new Notebook(NAME_ASUS, "Vivobook", OS_WINDOWS10, 10, BigDecimal.valueOf(33990),
@@ -99,22 +95,26 @@ public class Catalog {
         return this;
     }
 
-    public Map<String, List<String>> GetNotebooks() {
+    public String[] getOperatingSystem() {
+        return new String[] { OS_WINDOWS10, OS_WINDOWS11, OS_LINUX };
+    }
+
+    public Map<String, List<String>> getNotebooks() {
         Map<String, List<String>> sortedNB = new TreeMap<String, List<String>>();
         Map<String, Object> filters = new HashMap<>();
         filters.put("brand", NAME_ASUS);
-        sortedNB.put(NAME_ASUS, FilterNotebooks(Arrays.asList(_notebooks), filters));
+        sortedNB.put(NAME_ASUS, filterNotebooks(Arrays.asList(_notebooks), filters));
         filters.replace("brand", NAME_LENOVO);
-        sortedNB.put(NAME_LENOVO, FilterNotebooks(Arrays.asList(_notebooks), filters));
+        sortedNB.put(NAME_LENOVO, filterNotebooks(Arrays.asList(_notebooks), filters));
         return sortedNB;
     }
 
-    public List<String> GetNotebooks(Map<String, Object> filters) {
+    public List<String> getNotebooks(Map<String, Object> filters) {
 
-        return FilterNotebooks(Arrays.asList(_notebooks), filters);
+        return filterNotebooks(Arrays.asList(_notebooks), filters);
     }
 
-    private static List<String> FilterNotebooks(List<Notebook> notebooks, Map<String, Object> filters) {
+    private static List<String> filterNotebooks(List<Notebook> notebooks, Map<String, Object> filters) {
         List<String> list = new ArrayList<>();
         for (Notebook notebook : notebooks) {
             boolean isMatched = true;

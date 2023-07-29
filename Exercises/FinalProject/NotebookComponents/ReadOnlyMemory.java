@@ -3,6 +3,11 @@ package Exercises.FinalProject.NotebookComponents;
 import Exercises.FinalProject.Structs.TypeROM;
 
 public class ReadOnlyMemory {
+    private String _brand;
+    private String _name;
+    private int _size;
+    private TypeROM _typeROM;
+
     public ReadOnlyMemory(String brand, String name, int size, TypeROM type) {
         this._brand = brand;
         this._name = name;
@@ -10,12 +15,7 @@ public class ReadOnlyMemory {
         this._typeROM = type;
     }
 
-    private String _brand;
-    private String _name;
-    private int _size;
-    private TypeROM _typeROM;
-
-    public TypeROM GetType() {
+    public TypeROM getType() {
         return _typeROM;
     }
 

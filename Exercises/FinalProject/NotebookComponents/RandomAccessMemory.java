@@ -3,6 +3,11 @@ package Exercises.FinalProject.NotebookComponents;
 import Exercises.FinalProject.Structs.TypeRAM;
 
 public class RandomAccessMemory {
+    private String _brand;
+    private String _name;
+    private int _size;
+    private TypeRAM _typeRAM;
+
     public RandomAccessMemory(String brand, String name, int size, TypeRAM type) {
         this._brand = brand;
         this._name = name;
@@ -10,12 +15,7 @@ public class RandomAccessMemory {
         this._typeRAM = type;
     }
 
-    private String _brand;
-    private String _name;
-    private int _size;
-    private TypeRAM _typeRAM;
-
-    public TypeRAM GetType() {
+    public TypeRAM getType() {
         return _typeRAM;
     }
 

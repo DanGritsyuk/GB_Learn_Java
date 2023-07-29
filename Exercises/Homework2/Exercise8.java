@@ -1,7 +1,6 @@
 package Exercises.Homework2;
 
 import Exercises.Exercise;
-import Decorators.CalcLogDecorator;
 import Exercises.Homework1.Exercise3;
 
 public class Exercise8 extends Exercise {
@@ -10,9 +9,9 @@ public class Exercise8 extends Exercise {
     }
 
     @Override
-    public boolean Solution() {
+    public boolean solution() {
         Exercise3 calculator = new Exercise3("Простой калькулятор");
-        Exercise3 calculatorWithLog = new CalcLogDecorator(calculator);
-        return calculatorWithLog.Solution();
+        Exercise3 calculatorWithLog = new CalcLog(calculator);
+        return calculatorWithLog.solution();
     }
 }

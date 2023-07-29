@@ -14,38 +14,38 @@ import java.util.regex.Pattern;
 import Interface.ConsoleManager;
 
 public class JsonXMLParseController {
-    public static Map<String, String> JsonToMap(String strJson) {
+    public static Map<String, String> jsonToMap(String strJson) {
         Map<String, String> map = new HashMap<>();
-        Matcher matcher = PatternMatcher(strJson, "\"(.*?)\":\"(.*?)\"");
+        Matcher matcher = patternMatcher(strJson, "\"(.*?)\":\"(.*?)\"");
         while (matcher.find()) {
             map.put(matcher.group(1), matcher.group(2));
         }
         return map;
     }
 
-    public static String ReadJsonString(ConsoleManager cm, String message) {
-        String strJson = cm.InputText(message + "\n");
+    public static String readJsonString(ConsoleManager cm, String message) {
+        String strJson = cm.inputText(message + "\n");
         var filePath = strJson.replace("\"", "");
 
-        if (IsFilePath(filePath)) {
+        if (isFilePath(filePath)) {
             int strJsonLength = strJson.length();
-            strJson = GetFromFile(filePath);
-            DrawLineFromFile(cm, strJsonLength, strJson);
+            strJson = getFromFile(filePath);
+            drawLineFromFile(cm, strJsonLength, strJson);
         } else {
-            cm.PrintText();
+            cm.printText();
         }
 
         return strJson;
     }
 
-    public static Map<String, String> ReadJsonToMap(ConsoleManager cm, String message) {
-        return JsonToMap(ReadJsonString(cm, message));
+    public static Map<String, String> readJsonToMap(ConsoleManager cm, String message) {
+        return jsonToMap(readJsonString(cm, message));
     }
 
-    public static List<Map<String, String>> ReadJsonToArray(ConsoleManager cm, String message) {
-        var strJson = ReadJsonString(cm, message);
+    public static List<Map<String, String>> readJsonToArray(ConsoleManager cm, String message) {
+        var strJson = readJsonString(cm, message);
         String strJsonArray = "";
-        var matcher = PatternMatcher(strJson, "\\[(.*?)\\]");
+        var matcher = patternMatcher(strJson, "\\[(.*?)\\]");
         while (matcher.find()) {
             strJsonArray = matcher.group(1);
         }
@@ -53,12 +53,12 @@ public class JsonXMLParseController {
 
         var jsonDataArray = new ArrayList<Map<String, String>>();
         for (String jsonString : jsonArray) {
-            jsonDataArray.add(JsonToMap(jsonString));
+            jsonDataArray.add(jsonToMap(jsonString));
         }
         return jsonDataArray;
     }
 
-    public static String MapStringSetToXML(Map<String, Set<String>> map) {
+    public static String mapStringSetToXML(Map<String, Set<String>> map) {
         StringBuilder sb = new StringBuilder();
         sb.append("<map>");
         for (Map.Entry<String, Set<String>> entry : map.entrySet()) {
@@ -75,7 +75,7 @@ public class JsonXMLParseController {
         return sb.toString();
     }
 
-    public static Map<String, Set<String>> MapStringSetFromXML(String xml) {
+    public static Map<String, Set<String>> mapStringSetFromXML(String xml) {
         Map<String, Set<String>> map = new HashMap<>();
         int startIndex = xml.indexOf("<entry>");
         while (startIndex != -1) {
@@ -98,28 +98,28 @@ public class JsonXMLParseController {
         return map;
     }
 
-    private static Matcher PatternMatcher(String input, String regex) {
+    private static Matcher patternMatcher(String input, String regex) {
         Pattern pattern = Pattern.compile(regex);
         return pattern.matcher(input);
     }
 
-    private static Boolean IsFilePath(String filePath) {
+    private static Boolean isFilePath(String filePath) {
         File file = new File(filePath);
         return file.isFile();
     }
 
-    private static String GetFromFile(String filePath) {
+    private static String getFromFile(String filePath) {
         try {
-            return SaveLoadFileController.LoadFromFile(filePath)[0];
+            return SaveLoadFileController.loadFromFile(filePath)[0];
         } catch (IOException e) {
             e.printStackTrace();
             return "";
         }
     }
 
-    private static void DrawLineFromFile(ConsoleManager cm, int charCount, String strLine) {
-        cm.PrintText("\033[F", " ".repeat(charCount));
-        cm.PrintText("\b".repeat(charCount), strLine + "\n\n");
+    private static void drawLineFromFile(ConsoleManager cm, int charCount, String strLine) {
+        cm.printText("\033[F", " ".repeat(charCount));
+        cm.printText("\b".repeat(charCount), strLine + "\n\n");
     }
 
 }

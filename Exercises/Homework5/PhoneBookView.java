@@ -22,15 +22,15 @@ public class PhoneBookView {
     }
 
     public String AskName() {
-        var name = _cm.InputText("Введите фамилию: ");
+        var name = _cm.inputText("Введите фамилию: ");
         ClearField(1);
         return name;
     }
 
     public String[] AskNewContact() {
         String[] contactMap = new String[2];
-        contactMap[0] = _cm.InputText("Введите фамилию: ");
-        contactMap[1] = _cm.InputText("Введите телефон: ");
+        contactMap[0] = _cm.inputText("Введите фамилию: ");
+        contactMap[1] = _cm.inputText("Введите телефон: ");
         ClearField(2);
         return contactMap;
     }
@@ -55,7 +55,7 @@ public class PhoneBookView {
 
     private void ClearField(int linescount) {
         for (int i = 1; i <= linescount; i++) {
-            _cm.PrintText("\033[F", " ".repeat(100) + "\b".repeat(99));
+            _cm.printText("\033[F", " ".repeat(100) + "\b".repeat(99));
         }
     }
 

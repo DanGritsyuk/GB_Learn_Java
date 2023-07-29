@@ -13,9 +13,9 @@ public class Exercise7 extends Exercise {
     }
 
     @Override
-    public boolean Solution() {
+    public boolean solution() {
         var message = "Введите строку с данными учащихся или путь до файла, где она хранится:";
-        List<Map<String, String>> studentMap = JsonXMLParseController.ReadJsonToArray(cmdManager, message);
+        List<Map<String, String>> studentMap = JsonXMLParseController.readJsonToArray(cmdManager, message);
 
         StringBuilder stringBuilder = new StringBuilder();
         for (Map<String, String> student : studentMap) {
@@ -24,7 +24,7 @@ public class Exercise7 extends Exercise {
                     .append(" по предмету ").append(student.get("предмет")).append(".\n");
         }
 
-        cmdManager.PrintText(stringBuilder.toString());
+        cmdManager.printText(stringBuilder.toString());
         return false;
     }
 }

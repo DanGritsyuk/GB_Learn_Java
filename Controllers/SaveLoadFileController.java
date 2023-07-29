@@ -11,7 +11,7 @@ import java.util.List;
 
 public class SaveLoadFileController {
 
-    public static void SaveToFile(String filePath, String data, boolean append) throws IOException {
+    public static void saveToFile(String filePath, String data, boolean append) throws IOException {
         File file = new File(filePath);
         if (!file.exists()) {
             file.getParentFile().mkdirs();
@@ -25,7 +25,7 @@ public class SaveLoadFileController {
         }
     }
 
-    public static String[] LoadFromFile(String filePath) throws IOException {
+    public static String[] loadFromFile(String filePath) throws IOException {
         File file = new File(filePath);
         if (!file.exists()) {
             return null;

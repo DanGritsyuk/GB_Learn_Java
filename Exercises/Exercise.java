@@ -9,39 +9,42 @@ import Interface.ConsoleManager;
 import Interface.MenuRender;
 
 public abstract class Exercise {
-    public Exercise(String description) {
-        this._description = description;
-    }
 
     private String _description;
-    private String _borderLine = "==========================================";
-    protected ConsoleManager cmdManager = new ConsoleManager();
+    private String _borderLine;
+    protected ConsoleManager cmdManager;
 
-    public String GetDescription() {
+    public Exercise(String description) {
+        this._description = description;
+        this._borderLine = "==========================================";
+        this.cmdManager = new ConsoleManager();
+    }
+
+    public String getDescription() {
         return _description;
     }
 
-    public abstract boolean Solution();
+    public abstract boolean solution();
 
-    public void Start() {
+    public void startup() {
         boolean done = false;
         while (!done) {
-            DrawHeader();
+            drawHeader();
             try {
-                done = Solution();
+                done = solution();
             } catch (Exception ex) {
-                DrawHeader();
-                cmdManager.PrintText(ex.getMessage());
+                drawHeader();
+                cmdManager.printText(ex.getMessage());
             }
-            DrawFooter();
+            drawFooter();
             if (!done) {
-                done = End();
+                done = endDialog();
             }
         }
     }
 
-    public boolean End() {
-        cmdManager.PrintText("\n");
+    private boolean endDialog() {
+        cmdManager.printText("\n");
         Map<String, List<String>> menuData = new HashMap<String, List<String>>();
         menuData.put("Выберите следующий шаг:", Arrays.asList("Выход в главное меню.", "Начать заново."));
         var menu = new MenuRender(menuData, 0, true, false, "", "", "", "");
@@ -51,12 +54,12 @@ public abstract class Exercise {
         return answer == 0 || answer == 1;
     }
 
-    protected void DrawHeader() {
-        cmdManager.ConsoleClear();
-        cmdManager.PrintText(this._description + "\n" + this._borderLine + "\n");
+    protected void drawHeader() {
+        cmdManager.consoleClear();
+        cmdManager.printText(this._description + "\n" + this._borderLine + "\n");
     }
 
-    private void DrawFooter() {
-        cmdManager.PrintText("\n\n" + this._borderLine);
+    private void drawFooter() {
+        cmdManager.printText("\n\n" + this._borderLine);
     }
 }

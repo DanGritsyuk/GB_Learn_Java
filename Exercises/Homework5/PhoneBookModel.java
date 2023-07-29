@@ -13,12 +13,12 @@ public class PhoneBookModel {
     public PhoneBookModel() {
         StringBuilder sb = new StringBuilder();
         try {
-            String[] xmlData = SaveLoadFileController.LoadFromFile(_dataPath);
+            String[] xmlData = SaveLoadFileController.loadFromFile(_dataPath);
             if (xmlData != null) {
                 for (var line : xmlData) {
                     sb.append(line);
                 }
-                _contacts = JsonXMLParseController.MapStringSetFromXML(sb.toString());
+                _contacts = JsonXMLParseController.mapStringSetFromXML(sb.toString());
             } else {
                 _contacts = new TreeMap<String, Set<String>>();
             }
@@ -43,9 +43,9 @@ public class PhoneBookModel {
             phones.add(phone);
             _contacts.put(name, phones);
         }
-        String xmlData = JsonXMLParseController.MapStringSetToXML(_contacts);
+        String xmlData = JsonXMLParseController.mapStringSetToXML(_contacts);
         try {
-            SaveLoadFileController.SaveToFile(_dataPath, xmlData, false);
+            SaveLoadFileController.saveToFile(_dataPath, xmlData, false);
         } catch (IOException e) {
             e.printStackTrace();
         }

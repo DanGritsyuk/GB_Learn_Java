@@ -57,14 +57,14 @@ public class MenuRender {
         }
         int pageCount = this.pagesMap.size();
 
-        // ConsoleManager.hideCursor(true);
+        ConsoleManager.hideCursor(true);
         drawMenu();
         while (true) {
             var frameChanged = false;
-            int key = this.cm.GetKeyEvent();
+            int key = this.cm.getKeyEvent();
             switch (key) {
                 case KeyEvent.VK_ENTER:
-                    ConsoleManager.HideCursor(false);
+                    ConsoleManager.hideCursor(false);
                     clearConsoleText();
                     return currentPage.getCurrentLineIndex() + currentPage.getStartLineIndex() + 1;
                 case KeyEvent.VK_UP:
@@ -97,7 +97,7 @@ public class MenuRender {
                     break;
                 case KeyEvent.VK_ESCAPE:
                     if (this.isEscActive) {
-                        ConsoleManager.HideCursor(false);
+                        ConsoleManager.hideCursor(false);
                         clearConsoleText();
                         return 0;
                     }
@@ -132,12 +132,12 @@ public class MenuRender {
 
     private void drawMenu() {
         int blockIdCount = 0;
-        this.cm.PrintText(this.headerText);
+        this.cm.printText(this.headerText);
         for (String key : currentPage.getDataKeySet()) {
             if (blockIdCount > 0) {
-                this.cm.PrintText();
+                this.cm.printText();
             }
-            this.cm.PrintText(key);
+            this.cm.printText(key);
             List<String> pageData = currentPage.getDataByKey(key);
             for (int i = 0; i < pageData.size(); i++) {
                 clearLine();
@@ -154,16 +154,16 @@ public class MenuRender {
                 if (prToConsole.length() > LINE_MAX_CHARACTER_COUNT) {
                     prToConsole = prToConsole.substring(0, LINE_MAX_CHARACTER_COUNT - 3) + "...";
                 }
-                this.cm.PrintText(prToConsole);
+                this.cm.printText(prToConsole);
             }
             blockIdCount += pageData.size();
         }
-        cm.PrintText("\n".repeat(getEmtyLinesCount()));
+        cm.printText("\n".repeat(getEmtyLinesCount()));
         if (this.showHelpControl) {
             drawHelpText();
         }
         if (!footerText.isEmpty()) {
-            this.cm.PrintText(this.footerText);
+            this.cm.printText(this.footerText);
         }
     }
 
@@ -200,7 +200,7 @@ public class MenuRender {
 
         String padding = pagesInfo + "\n" + helpInfo;
 
-        this.cm.PrintText(padding, "\n\n");
+        this.cm.printText(padding, "\n\n");
         this.helpTextLines = 4;
     }
 
@@ -282,12 +282,12 @@ public class MenuRender {
             if (methodForLines != null) {
                 methodForLines.run();
             }
-            this.cm.PrintText("\033[F", "");
+            this.cm.printText("\033[F", "");
         }
     }
 
     private void clearLine() {
-        this.cm.PrintText(" ".repeat(this.largestLine), "");
-        this.cm.PrintText("\b".repeat(this.largestLine), "");
+        this.cm.printText(" ".repeat(this.largestLine), "");
+        this.cm.printText("\b".repeat(this.largestLine), "");
     }
 }

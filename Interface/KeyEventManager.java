@@ -21,7 +21,7 @@ public class KeyEventManager implements KeyListener {
         }
     }
 
-    public static int Start() {
+    public static int start() {
         int keyCode = 0;
         var frame = new JFrame("Key capture");
         var keManager = new KeyEventManager();
