@@ -11,8 +11,9 @@ import Exercises.Homework2.Exercise8;
 import Exercises.Homework3.Exercise9;
 import Exercises.Homework4.Exercise10;
 import Exercises.Homework5.Exercise11;
-import Exercises.LearnExceptions.Exercise13;
 import Exercises.FinalProject.Exercise12;
+import Exercises.LearnExceptions.Exercise13;
+import Exercises.TestExceptions.Exercise14;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -45,7 +46,8 @@ public class ExerciseBuilder {
         descriptions.put("ИТОГОВЫЙ ПРОЕКТ ПО ТЕМЕ ОСНОВЫ JAVA", Arrays.asList(
                 "Каталог ноутбуков"));
         descriptions.put("ОБРАБОТКА ИСКЛЮЧЕНИЙ", Arrays.asList(
-                "Задание 1: Пользователь вводит число типа float. Если пользователь ввел пустую строку, либо строку невозможно преобразовать в тип float, выдать исключение."));
+                "Задание 1: Пользователь вводит число типа float. Если пользователь ввел пустую строку, либо строку невозможно преобразовать в тип float, выдать исключение.",
+                "Задание 2: приложение, которое будет запрашивать у пользователя следующие данные в произвольном порядке, разделенные пробелом: Фамилия Имя Отчество, дата рождения, номер телефона, пол."));
 
         linesCount = tasksCount();
     }
@@ -105,6 +107,8 @@ public class ExerciseBuilder {
                 return new Exercise12(taskText);
             case 13:
                 return new Exercise13(taskText);
+            case 14:
+                return new Exercise14(taskText);
             default:
                 String nameTask = taskText.length() < 51 ? taskText : taskText.substring(0, 47) + "...";
                 throw new Exception("ЗАДАЧА <" + nameTask + "> ЕЩЕ НЕ РЕАЛИЗОВАНА");
